@@ -28,7 +28,7 @@ function safeEqual(left: string, right: string) {
 }
 
 export function verifyAdminCredentials(username: string, password: string) {
-  const expectedUsername = process.env.ADMIN_USERNAME;
+  const expectedUsername = process.env.ADMIN_EMAIL ?? process.env.ADMIN_USERNAME;
   const expectedPassword = process.env.ADMIN_PASSWORD;
   if (!expectedUsername || !expectedPassword) return false;
 

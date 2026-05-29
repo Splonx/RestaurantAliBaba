@@ -9,7 +9,9 @@ export const defaultSettings = {
     "Restaurant Ali Baba El Jadida célèbre une cuisine généreuse, fraîche et conviviale dans un cadre inspiré des riads marocains contemporains.",
   phone: "06.61.29.92.47",
   landline: "05.23.34.16.22",
-  whatsapp: "+212661299247",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
+    ? `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
+    : "+212661299247",
   address: "Route de Casablanca n°8, El Jadida",
   instagram: "@restaurantalibabaeljadida",
   instagramUrl: "https://www.instagram.com/restaurantalibabaeljadida/",

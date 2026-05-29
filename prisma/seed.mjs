@@ -1,9 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL ?? "file:./prisma/dev.db"
-});
+const connectionString =
+  process.env.DATABASE_URL ??
+  "postgresql://postgres:postgres@127.0.0.1:5432/restaurant_alibaba?schema=public";
+
+const adapter = new PrismaPg(
+  new Pool({
+    connectionString
+  })
+);
+
 const prisma = new PrismaClient({ adapter });
 
 const settings = {
@@ -192,7 +200,7 @@ const events = [
   }
 ];
 
-async function main() {
+async function seedSettings() {
   for (const [key, value] of Object.entries(settings)) {
     await prisma.siteSetting.upsert({
       where: { key },
@@ -200,19 +208,44 @@ async function main() {
       create: { key, value }
     });
   }
+}
 
-  const categoryCount = await prisma.category.count();
-  if (categoryCount > 0) return;
-
+async function seedCategories() {
   for (const category of categories) {
-    await prisma.category.create({ data: category });
+    await prisma.category.upsert({
+      where: { slug: category.slug },
+      update: {
+        name: category.name,
+        sortOrder: category.sortOrder,
+        isActive: true
+      },
+      create: {
+        name: category.name,
+        slug: category.slug,
+        sortOrder: category.sortOrder,
+        isActive: true
+      }
+    });
   }
+}
 
+async function seedDishes() {
   const categoryBySlug = Object.fromEntries(
     (await prisma.category.findMany()).map((category) => [category.slug, category.id])
   );
 
   for (const dish of dishes) {
+    const categoryId = categoryBySlug[dish.categorySlug];
+    if (!categoryId) continue;
+
+    const existing = await prisma.dish.findFirst({
+      where: {
+        name: dish.name,
+        categoryId
+      }
+    });
+    if (existing) continue;
+
     await prisma.dish.create({
       data: {
         name: dish.name,
@@ -221,13 +254,50 @@ async function main() {
         imageUrl: dish.imageUrl,
         badge: dish.badge,
         sortOrder: dish.sortOrder,
-        categoryId: categoryBySlug[dish.categorySlug]
+        categoryId
       }
     });
   }
+}
 
-  await prisma.galleryImage.createMany({ data: gallery });
-  await prisma.eventService.createMany({ data: events });
+async function seedGallery() {
+  for (const image of gallery) {
+    const existing = await prisma.galleryImage.findFirst({
+      where: {
+        title: image.title,
+        type: image.type
+      }
+    });
+    if (existing) continue;
+    await prisma.galleryImage.create({ data: image });
+  }
+}
+
+async function seedEvents() {
+  for (const event of events) {
+    const existing = await prisma.eventService.findFirst({
+      where: { title: event.title }
+    });
+    if (existing) continue;
+
+    await prisma.eventService.create({
+      data: {
+        title: event.title,
+        description: event.description,
+        imageUrl: event.imageUrl,
+        isActive: true,
+        sortOrder: event.sortOrder
+      }
+    });
+  }
+}
+
+async function main() {
+  await seedSettings();
+  await seedCategories();
+  await seedDishes();
+  await seedGallery();
+  await seedEvents();
 }
 
 main()

@@ -7,12 +7,12 @@ import MenuShowcase from "@/components/site/MenuShowcase";
 import SiteChrome from "@/components/site/SiteChrome";
 import SpecialtiesBand from "@/components/site/SpecialtiesBand";
 import StorySection from "@/components/site/StorySection";
-import { prisma } from "@/lib/prisma";
 import type {
   DishWithCategory,
   EventServiceModel,
   GalleryImageModel
 } from "@/lib/prisma-types";
+import { getPublicHomeData } from "@/lib/public-data";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
@@ -22,26 +22,14 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const dishesQuery: Promise<DishWithCategory[]> = prisma.dish.findMany({
-    where: { isActive: true },
-    include: { category: true },
-    orderBy: [{ badge: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
-    take: 8
-  });
-  const galleryQuery: Promise<GalleryImageModel[]> = prisma.galleryImage.findMany({
-    orderBy: [{ isFeatured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }]
-  });
-  const eventsQuery: Promise<EventServiceModel[]> = prisma.eventService.findMany({
-    where: { isActive: true },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
-  });
-
-  const [settings, dishes, gallery, events] = await Promise.all([
+  const homeDataPromise = getPublicHomeData();
+  const [settings, homeData] = await Promise.all([
     getSiteSettings(),
-    dishesQuery,
-    galleryQuery,
-    eventsQuery
+    homeDataPromise
   ]);
+  const dishes = homeData.dishes;
+  const gallery = homeData.gallery;
+  const events = homeData.events;
 
   const schema = {
     "@context": "https://schema.org",
