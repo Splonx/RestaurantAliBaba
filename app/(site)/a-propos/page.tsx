@@ -3,7 +3,7 @@ import ContactSection from "@/components/site/ContactSection";
 import SiteChrome from "@/components/site/SiteChrome";
 import SpecialtiesBand from "@/components/site/SpecialtiesBand";
 import StorySection from "@/components/site/StorySection";
-import { getSiteSettings } from "@/lib/settings";
+import { defaultSettings, getSiteSettings, type SiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "À propos | Restaurant Ali Baba El Jadida",
@@ -12,7 +12,13 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const settings = await getSiteSettings();
+  let settings: SiteSettings = defaultSettings;
+  try {
+    settings = await getSiteSettings();
+  } catch {
+    settings = defaultSettings;
+  }
+
   return (
     <SiteChrome settings={settings}>
       <main>

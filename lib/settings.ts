@@ -20,10 +20,53 @@ export const defaultSettings = {
 
 export type SiteSettings = typeof defaultSettings;
 
+function normalizeText(value: unknown, fallback: string) {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : fallback;
+}
+
+function normalizeUrl(value: unknown, fallback: string) {
+  if (typeof value !== "string" || value.trim().length === 0) return fallback;
+  try {
+    const normalized = new URL(value.trim());
+    if (normalized.protocol === "http:" || normalized.protocol === "https:") {
+      return normalized.toString();
+    }
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function sanitizeSettings(input: Partial<Record<keyof SiteSettings, unknown>>): SiteSettings {
+  return {
+    heroTitle: normalizeText(input.heroTitle, defaultSettings.heroTitle),
+    heroSubtitle: normalizeText(input.heroSubtitle, defaultSettings.heroSubtitle),
+    aboutText: normalizeText(input.aboutText, defaultSettings.aboutText),
+    phone: normalizeText(input.phone, defaultSettings.phone),
+    landline: normalizeText(input.landline, defaultSettings.landline),
+    whatsapp: normalizeText(input.whatsapp, defaultSettings.whatsapp),
+    address: normalizeText(input.address, defaultSettings.address),
+    instagram: normalizeText(input.instagram, defaultSettings.instagram),
+    instagramUrl: normalizeUrl(input.instagramUrl, defaultSettings.instagramUrl),
+    hours: normalizeText(input.hours, defaultSettings.hours),
+    footerText: normalizeText(input.footerText, defaultSettings.footerText)
+  };
+}
+
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const rows: SiteSettingModel[] = await prisma.siteSetting.findMany();
-  const dbSettings = Object.fromEntries(
-    rows.map((row: SiteSettingModel) => [row.key, row.value])
-  );
-  return { ...defaultSettings, ...dbSettings };
+  try {
+    const rows: SiteSettingModel[] = await prisma.siteSetting.findMany();
+    const dbSettings = Object.fromEntries(
+      rows.map((row: SiteSettingModel) => [row.key, row.value])
+    ) as Partial<Record<keyof SiteSettings, unknown>>;
+
+    return sanitizeSettings({
+      ...defaultSettings,
+      ...dbSettings
+    });
+  } catch {
+    return defaultSettings;
+  }
 }
