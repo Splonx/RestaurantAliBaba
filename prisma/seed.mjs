@@ -2,9 +2,17 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const connectionString =
-  process.env.DATABASE_URL ??
-  "postgresql://postgres:postgres@127.0.0.1:5432/restaurant_alibaba?schema=public";
+function getConnectionString() {
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    throw new Error(
+      "DATABASE_URL is required. Configure a PostgreSQL connection string before running the seed."
+    );
+  }
+  return databaseUrl;
+}
+
+const connectionString = getConnectionString();
 
 const adapter = new PrismaPg(
   new Pool({

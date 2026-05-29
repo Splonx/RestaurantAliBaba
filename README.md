@@ -15,7 +15,6 @@ Copier `.env.example` vers `.env` puis renseigner :
 - `NEXTAUTH_SECRET`
 - `ADMIN_EMAIL`
 - `ADMIN_PASSWORD`
-- `AUTH_SECRET`
 - `NEXT_PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`
 
@@ -33,23 +32,26 @@ npm run dev
 
 ## Déploiement Vercel
 
-1. Créer une base PostgreSQL (Supabase ou Neon).
-2. Ajouter `DATABASE_URL` dans Vercel.
-3. Ajouter `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `AUTH_SECRET`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`.
-4. Pousser le projet sur GitHub.
-5. Vercel exécute automatiquement :
+1. Créer une base PostgreSQL managée sur Neon ou Supabase.
+2. Ouvrir `Vercel > Project > Settings > Environment Variables`.
+3. Ajouter `DATABASE_URL` (URL PostgreSQL distante, jamais localhost).
+4. Ajouter `NEXTAUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`.
+5. Pousser le projet sur GitHub.
+6. Vercel exécute automatiquement :
    - `prisma migrate deploy`
    - `prisma generate`
    - `next build`
 
-Le script `build` est configuré pour cela sur Vercel/CI :
+Le script `build` est :
 
 ```bash
-node scripts/build.mjs
+prisma migrate deploy && prisma generate && next build
 ```
 
 ## Notes
 
-- Les pages publiques utilisent des fallbacks serveur élégants si la base est vide ou indisponible au build.
+- Si `DATABASE_URL` est absent, le build échoue immédiatement avec un message explicite.
+- Sur Vercel, le build échoue aussi si `DATABASE_URL` pointe vers `localhost` ou `127.0.0.1`.
+- Les pages publiques utilisent des fallbacks serveur élégants si la base est vide.
 - Le back-office reste strictement branché sur Prisma/PostgreSQL (pas de fallback silencieux côté admin).
 - Les uploads restent locaux dans `public/uploads` tant qu'aucun stockage externe n'est configuré.
