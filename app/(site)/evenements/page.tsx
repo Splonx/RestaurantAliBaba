@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import EventCards from "@/components/site/EventCards";
 import SiteChrome from "@/components/site/SiteChrome";
 import { prisma } from "@/lib/prisma";
+import type { EventServiceModel } from "@/lib/prisma-types";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
@@ -11,12 +12,13 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsPage() {
+  const eventsQuery: Promise<EventServiceModel[]> = prisma.eventService.findMany({
+    where: { isActive: true },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
+  });
   const [settings, events] = await Promise.all([
     getSiteSettings(),
-    prisma.eventService.findMany({
-      where: { isActive: true },
-      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
-    })
+    eventsQuery
   ]);
 
   return (
@@ -34,7 +36,7 @@ export default async function EventsPage() {
         </section>
         <EventCards
           full
-          events={events.map((event) => ({
+          events={events.map((event: EventServiceModel) => ({
             id: event.id,
             title: event.title,
             description: event.description,

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import MenuList from "@/components/site/MenuList";
 import SiteChrome from "@/components/site/SiteChrome";
 import { prisma } from "@/lib/prisma";
+import type { CategoryWithDishes, DishModel } from "@/lib/prisma-types";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
@@ -11,18 +12,19 @@ export const metadata: Metadata = {
 };
 
 export default async function MenuPage() {
+  const categoriesQuery: Promise<CategoryWithDishes[]> = prisma.category.findMany({
+    where: { isActive: true },
+    include: {
+      dishes: {
+        where: { isActive: true },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
+      }
+    },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
+  });
   const [settings, categories] = await Promise.all([
     getSiteSettings(),
-    prisma.category.findMany({
-      where: { isActive: true },
-      include: {
-        dishes: {
-          where: { isActive: true },
-          orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
-        }
-      },
-      orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
-    })
+    categoriesQuery
   ]);
 
   return (
@@ -39,10 +41,10 @@ export default async function MenuPage() {
           </p>
         </section>
         <MenuList
-          categories={categories.map((category) => ({
+          categories={categories.map((category: CategoryWithDishes) => ({
             id: category.id,
             name: category.name,
-            dishes: category.dishes.map((dish) => ({
+            dishes: category.dishes.map((dish: DishModel) => ({
               id: dish.id,
               name: dish.name,
               description: dish.description,

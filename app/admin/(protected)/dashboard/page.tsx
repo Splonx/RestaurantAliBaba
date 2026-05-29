@@ -1,34 +1,55 @@
 import { Camera, CalendarHeart, Layers3, Tags, Utensils } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
 import { formatDateTime } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
+import type { UpdatedAtRow } from "@/lib/prisma-types";
 
-async function getStats() {
+type DashboardStats = {
+  dishCount: number;
+  categoryCount: number;
+  galleryCount: number;
+  eventCount: number;
+  latest: Date | undefined;
+};
+
+type DashboardCard = {
+  label: string;
+  value: number;
+  icon: LucideIcon;
+};
+
+function isDate(value: Date | undefined): value is Date {
+  return value instanceof Date;
+}
+
+async function getStats(): Promise<DashboardStats> {
+  const latestRowsQuery: Promise<UpdatedAtRow[]> = Promise.all([
+    prisma.dish.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.category.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.galleryImage.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.eventService.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.siteSetting.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } })
+  ]);
   const [dishCount, categoryCount, galleryCount, eventCount, latestRows] = await Promise.all([
     prisma.dish.count(),
     prisma.category.count(),
     prisma.galleryImage.count(),
     prisma.eventService.count(),
-    Promise.all([
-      prisma.dish.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
-      prisma.category.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
-      prisma.galleryImage.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
-      prisma.eventService.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
-      prisma.siteSetting.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } })
-    ])
+    latestRowsQuery
   ]);
 
   const latest = latestRows
-    .map((row) => row?.updatedAt)
-    .filter(Boolean)
-    .sort((a, b) => Number(b) - Number(a))[0];
+    .map((row: UpdatedAtRow) => row?.updatedAt)
+    .filter(isDate)
+    .sort((left: Date, right: Date) => Number(right) - Number(left))[0];
 
   return { dishCount, categoryCount, galleryCount, eventCount, latest };
 }
 
 export default async function DashboardPage() {
   const stats = await getStats();
-  const cards = [
+  const cards: DashboardCard[] = [
     { label: "Plats", value: stats.dishCount, icon: Utensils },
     { label: "Catégories", value: stats.categoryCount, icon: Tags },
     { label: "Images galerie", value: stats.galleryCount, icon: Camera },

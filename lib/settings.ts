@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { SiteSettingModel } from "@/lib/prisma-types";
 
 export const defaultSettings = {
   heroTitle: "Ali Baba El Jadida",
@@ -20,7 +21,9 @@ export const defaultSettings = {
 export type SiteSettings = typeof defaultSettings;
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const rows = await prisma.siteSetting.findMany();
-  const dbSettings = Object.fromEntries(rows.map((row) => [row.key, row.value]));
+  const rows: SiteSettingModel[] = await prisma.siteSetting.findMany();
+  const dbSettings = Object.fromEntries(
+    rows.map((row: SiteSettingModel) => [row.key, row.value])
+  );
   return { ...defaultSettings, ...dbSettings };
 }

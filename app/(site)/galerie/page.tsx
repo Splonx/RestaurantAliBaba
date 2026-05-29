@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import GalleryEditorial from "@/components/site/GalleryEditorial";
 import SiteChrome from "@/components/site/SiteChrome";
 import { prisma } from "@/lib/prisma";
+import type { GalleryImageModel } from "@/lib/prisma-types";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
@@ -11,11 +12,12 @@ export const metadata: Metadata = {
 };
 
 export default async function GalleryPage() {
+  const imagesQuery: Promise<GalleryImageModel[]> = prisma.galleryImage.findMany({
+    orderBy: [{ isFeatured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }]
+  });
   const [settings, images] = await Promise.all([
     getSiteSettings(),
-    prisma.galleryImage.findMany({
-      orderBy: [{ isFeatured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }]
-    })
+    imagesQuery
   ]);
 
   return (
@@ -32,7 +34,7 @@ export default async function GalleryPage() {
           </p>
         </section>
         <GalleryEditorial
-          images={images.map((image) => ({
+          images={images.map((image: GalleryImageModel) => ({
             id: image.id,
             title: image.title,
             imageUrl: image.imageUrl,

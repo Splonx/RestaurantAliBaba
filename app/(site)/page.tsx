@@ -8,6 +8,11 @@ import SiteChrome from "@/components/site/SiteChrome";
 import SpecialtiesBand from "@/components/site/SpecialtiesBand";
 import StorySection from "@/components/site/StorySection";
 import { prisma } from "@/lib/prisma";
+import type {
+  DishWithCategory,
+  EventServiceModel,
+  GalleryImageModel
+} from "@/lib/prisma-types";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
@@ -17,21 +22,25 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
+  const dishesQuery: Promise<DishWithCategory[]> = prisma.dish.findMany({
+    where: { isActive: true },
+    include: { category: true },
+    orderBy: [{ badge: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
+    take: 8
+  });
+  const galleryQuery: Promise<GalleryImageModel[]> = prisma.galleryImage.findMany({
+    orderBy: [{ isFeatured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }]
+  });
+  const eventsQuery: Promise<EventServiceModel[]> = prisma.eventService.findMany({
+    where: { isActive: true },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
+  });
+
   const [settings, dishes, gallery, events] = await Promise.all([
     getSiteSettings(),
-    prisma.dish.findMany({
-      where: { isActive: true },
-      include: { category: true },
-      orderBy: [{ badge: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
-      take: 8
-    }),
-    prisma.galleryImage.findMany({
-      orderBy: [{ isFeatured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }]
-    }),
-    prisma.eventService.findMany({
-      where: { isActive: true },
-      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
-    })
+    dishesQuery,
+    galleryQuery,
+    eventsQuery
   ]);
 
   const schema = {
@@ -58,7 +67,7 @@ export default async function HomePage() {
         <StorySection settings={settings} />
         <SpecialtiesBand />
         <MenuShowcase
-          dishes={dishes.map((dish) => ({
+          dishes={dishes.map((dish: DishWithCategory) => ({
             id: dish.id,
             name: dish.name,
             description: dish.description,
@@ -70,7 +79,7 @@ export default async function HomePage() {
         />
         <GalleryEditorial
           compact
-          images={gallery.map((image) => ({
+          images={gallery.map((image: GalleryImageModel) => ({
             id: image.id,
             title: image.title,
             imageUrl: image.imageUrl,
@@ -81,7 +90,7 @@ export default async function HomePage() {
           settings={settings}
         />
         <EventCards
-          events={events.map((event) => ({
+          events={events.map((event: EventServiceModel) => ({
             id: event.id,
             title: event.title,
             description: event.description,

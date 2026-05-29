@@ -1,9 +1,11 @@
 import GalleryManager from "@/components/admin/GalleryManager";
 import PageHeader from "@/components/admin/PageHeader";
 import { prisma } from "@/lib/prisma";
+import type { GalleryImageModel } from "@/lib/prisma-types";
+import { toGalleryImageKind } from "@/lib/prisma-types";
 
 export default async function AdminGalleryPage() {
-  const images = await prisma.galleryImage.findMany({
+  const images: GalleryImageModel[] = await prisma.galleryImage.findMany({
     orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }]
   });
 
@@ -14,12 +16,12 @@ export default async function AdminGalleryPage() {
         text="Gérez les images de plats, salle, ambiance et événements. Les images mises en avant nourrissent le rendu éditorial du site."
       />
       <GalleryManager
-        images={images.map((image) => ({
+        images={images.map((image: GalleryImageModel) => ({
           id: image.id,
           title: image.title,
           imageUrl: image.imageUrl,
           alt: image.alt,
-          type: image.type as "plat" | "salle" | "événement" | "ambiance",
+          type: toGalleryImageKind(image.type),
           isFeatured: image.isFeatured,
           sortOrder: image.sortOrder
         }))}
