@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  background: #f7efe2;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(184, 92, 56, 0.16), transparent 30rem),
+    radial-gradient(circle at 92% 8%, rgba(77, 90, 58, 0.12), transparent 24rem),
+    linear-gradient(180deg, #f7efe2 0%, #fff8ef 52%, #f7efe2 100%);
+  color: #3a2418;
+}
+
+::selection {
+  background: rgba(184, 92, 56, 0.28);
+}
+
+@layer base {
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-terracotta;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-terracotta;
+  }
+
+  .moroccan-pattern {
+    background-image:
+      linear-gradient(45deg, rgba(184, 92, 56, 0.045) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(184, 92, 56, 0.045) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(77, 90, 58, 0.045) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(77, 90, 58, 0.045) 75%);
+    background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    background-size: 24px 24px;
+  }
+}
