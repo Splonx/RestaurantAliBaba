@@ -36,11 +36,13 @@ npm run dev
 2. Ouvrir `Vercel > Project > Settings > Environment Variables`.
 3. Ajouter `DATABASE_URL` (URL PostgreSQL distante, jamais localhost).
 4. Ajouter `NEXTAUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`.
-5. Pousser le projet sur GitHub.
-6. Vercel exécute automatiquement :
+5. Cocher les environnements `Production`, `Preview` et `Development` pour chaque variable.
+6. Pousser le projet sur GitHub.
+7. Vercel exécute automatiquement :
    - `prisma migrate deploy`
    - `prisma generate`
    - `next build`
+8. Relancer un redéploiement (`Redeploy`) depuis Vercel.
 
 Le script `build` est :
 

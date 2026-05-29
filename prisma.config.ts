@@ -1,23 +1,23 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
-function getDatabaseUrl() {
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) {
-    throw new Error(
-      "DATABASE_URL is required. Configure a PostgreSQL connection string in environment variables."
-    );
-  }
-  return databaseUrl;
-}
+const databaseUrl = process.env.DATABASE_URL;
 
-export default defineConfig({
+const baseConfig = {
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
     seed: "node prisma/seed.mjs"
-  },
-  datasource: {
-    url: getDatabaseUrl()
   }
-});
+} as const;
+
+export default defineConfig(
+  databaseUrl
+    ? {
+        ...baseConfig,
+        datasource: {
+          url: databaseUrl
+        }
+      }
+    : baseConfig
+);
