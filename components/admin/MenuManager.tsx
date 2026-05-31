@@ -150,7 +150,7 @@ export default function MenuManager({
             </label>
             <label className="block">
               <span className="text-sm font-semibold">Prix</span>
-              <input className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("price")} name="price" placeholder="Prix à confirmer si vide" />
+              <input className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("price")} name="price" placeholder="Disponible au restaurant si vide" />
             </label>
             <label className="block">
               <span className="text-sm font-semibold">Badge</span>
@@ -224,7 +224,7 @@ export default function MenuManager({
                     </div>
                   </td>
                   <td className="px-5 py-4">{dish.categoryName}</td>
-                  <td className="px-5 py-4">{dish.price || "Prix à confirmer"}</td>
+                  <td className="px-5 py-4">{dish.price || "Disponible au restaurant"}</td>
                   <td className="px-5 py-4">{dish.badge || "Aucun"}</td>
                   <td className="px-5 py-4">{dish.sortOrder}</td>
                   <td className="px-5 py-4">{dish.isActive ? "Actif" : "Inactif"}</td>

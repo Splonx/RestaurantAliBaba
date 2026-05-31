@@ -20,7 +20,7 @@ export default async function AdminMenuPage() {
     <>
       <PageHeader
         title="Gestion du menu"
-        text="Ajoutez, modifiez, désactivez et réordonnez les plats. Les prix vides apparaissent comme “Prix à confirmer” sur le site public."
+        text="Ajoutez, modifiez, désactivez et réordonnez les plats. Les prix vides apparaissent comme “Disponible au restaurant” sur le site public."
       />
       <MenuManager
         dishes={dishes.map((dish: DishWithCategory) => ({

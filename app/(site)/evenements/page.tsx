@@ -8,7 +8,7 @@ import { getSiteSettings } from "@/lib/settings";
 export const metadata: Metadata = {
   title: "Événements privés | Restaurant Ali Baba El Jadida",
   description:
-    "Organisez anniversaires, repas de groupe, familles, soirées privées et déjeuners professionnels au Restaurant Ali Baba El Jadida."
+    "Organisez vos événements privés et repas de groupe au Restaurant Ali Baba El Jadida."
 };
 
 export default async function EventsPage() {
@@ -20,14 +20,14 @@ export default async function EventsPage() {
   return (
     <SiteChrome settings={settings}>
       <main>
-        <section className="moroccan-pattern bg-coffee px-5 py-20 text-center text-cream sm:py-24">
-          <p className="eyebrow">Groupes & événements</p>
+        <section className="grain-overlay bg-[#10151e] px-5 py-20 text-center text-cream sm:py-24">
+          <p className="eyebrow !text-sand">Groupes & événements</p>
           <h1 className="mt-3 font-display text-6xl font-semibold leading-none sm:text-7xl">
-            Réunir autour d’une belle table
+            Un cadre prêt pour célébrer
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl leading-8 text-cream/70">
-            Restaurant événement El Jadida pour familles, groupes, anniversaires,
-            soirées privées et repas professionnels.
+          <p className="mx-auto mt-5 max-w-2xl leading-8 text-cream/75">
+            Familles, anniversaires, équipes et soirées privées : une organisation simple,
+            une ambiance conviviale, un service attentif.
           </p>
         </section>
         <EventCards

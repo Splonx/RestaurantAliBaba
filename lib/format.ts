@@ -17,5 +17,5 @@ export function formatDateTime(value: Date | string | null | undefined) {
 }
 
 export function displayPrice(price?: string | null) {
-  return price && price.trim().length > 0 ? price : "Prix à confirmer";
+  return price && price.trim().length > 0 ? price : "Disponible au restaurant";
 }

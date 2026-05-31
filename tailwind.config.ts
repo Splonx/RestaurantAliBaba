@@ -9,14 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ivory: "#F7EFE2",
+        ivory: "#F4EFE6",
         terracotta: "#B85C38",
-        coffee: "#3A2418",
-        sand: "#D8B98C",
-        olive: "#4D5A3A",
-        copper: "#B7773C",
-        cream: "#FFF8EF",
-        charcoal: "#16110D"
+        coffee: "#21160F",
+        sand: "#DCC7A0",
+        olive: "#4A5A3A",
+        copper: "#C07B48",
+        cream: "#FFFBF4",
+        charcoal: "#141013",
+        sea: "#094E68",
+        slate: "#1B2533"
       },
       fontFamily: {
         display: ["var(--font-display)", "Georgia", "serif"],

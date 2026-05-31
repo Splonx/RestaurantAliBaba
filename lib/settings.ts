@@ -4,7 +4,7 @@ import type { SiteSettingModel } from "@/lib/prisma-types";
 export const defaultSettings = {
   heroTitle: "Ali Baba El Jadida",
   heroSubtitle:
-    "Cuisine marocaine & méditerranéenne dans une adresse chaleureuse au cœur d’El Jadida",
+    "Poissons, grillades et cuisine marocaine face à l’océan à El Jadida",
   aboutText:
     "Restaurant Ali Baba El Jadida célèbre une cuisine généreuse, fraîche et conviviale dans un cadre inspiré des riads marocains contemporains.",
   phone: "06.61.29.92.47",
@@ -15,7 +15,7 @@ export const defaultSettings = {
   address: "Route de Casablanca n°8, El Jadida",
   instagram: "@restaurantalibabaeljadida",
   instagramUrl: "https://www.instagram.com/restaurantalibabaeljadida/",
-  hours: "Horaires à confirmer auprès du restaurant",
+  hours: "Tous les jours — 12h00 à 01h00",
   footerText:
     "Cuisine marocaine et méditerranéenne, poissons, grillades et événements privés à El Jadida."
 };

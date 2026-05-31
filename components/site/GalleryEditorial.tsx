@@ -1,4 +1,5 @@
 import { Instagram } from "lucide-react";
+import Image from "next/image";
 import Reveal from "@/components/site/Reveal";
 import SectionIntro from "@/components/site/SectionIntro";
 import type { SiteSettings } from "@/lib/settings";
@@ -21,39 +22,51 @@ export default function GalleryEditorial({
   settings: SiteSettings;
   compact?: boolean;
 }) {
-  const visible = compact ? images.slice(0, 5) : images;
+  const visible = compact ? images.slice(0, 6) : images;
 
   return (
-    <section className="bg-[#efe3d2] py-24 sm:py-28">
+    <section className="bg-[#0f141c] py-24 text-cream sm:py-28">
       <div className="section-shell">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionIntro
-            eyebrow="Galerie"
-            title="Ambiance, plats et moments à partager"
-            text="Une galerie éditoriale pour montrer l’expérience du restaurant : salle, assiettes, famille, groupes et atmosphère chaleureuse."
+            eyebrow="Galerie immersive"
+            title="L’expérience en images, pas en simple grille"
+            text="Salle, assiettes, service et ambiance : chaque photo doit donner envie de réserver."
+            light
           />
           <Reveal>
-            <a href={settings.instagramUrl} target="_blank" rel="noreferrer" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-coffee px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-cream transition hover:bg-terracotta">
+            <a
+              href={settings.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="focus-ring inline-flex items-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-cream transition hover:border-sand hover:text-sand"
+            >
               <Instagram size={17} aria-hidden />
-              Instagram
+              Voir Instagram
             </a>
           </Reveal>
         </div>
 
-        <div className="mt-12 grid auto-rows-[220px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 columns-1 gap-4 sm:columns-2 xl:columns-3">
           {visible.map((image, index) => (
-            <Reveal
-              key={image.id}
-              delay={index * 0.04}
-              className={index === 0 ? "sm:col-span-2 sm:row-span-2" : index === 3 ? "lg:col-span-2" : ""}
-            >
-              <figure className="group relative h-full overflow-hidden rounded-lg bg-coffee shadow-soft">
-                <img src={image.imageUrl} alt={image.alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-coffee/80 via-coffee/10 to-transparent" />
-                <figcaption className="absolute bottom-4 left-4 right-4">
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-sand">{image.type}</p>
-                  <h3 className="mt-1 font-display text-3xl font-semibold text-cream">{image.title}</h3>
-                </figcaption>
+            <Reveal key={image.id} delay={index * 0.03} className="mb-4 break-inside-avoid">
+              <figure className="group overflow-hidden rounded-lg border border-white/10 bg-black/30">
+                <div className={`relative ${index % 3 === 0 ? "h-[420px]" : index % 3 === 1 ? "h-[300px]" : "h-[360px]"}`}>
+                  <Image
+                    src={image.imageUrl}
+                    alt={image.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <figcaption className="absolute bottom-3 left-3 right-3">
+                    <p className="text-[0.62rem] font-bold uppercase tracking-[0.14em] text-sand">
+                      {image.type}
+                    </p>
+                    <h3 className="mt-1 font-display text-3xl font-semibold text-cream">{image.title}</h3>
+                  </figcaption>
+                </div>
               </figure>
             </Reveal>
           ))}

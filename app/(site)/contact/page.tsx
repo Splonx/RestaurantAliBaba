@@ -6,7 +6,7 @@ import { getSiteSettings } from "@/lib/settings";
 export const metadata: Metadata = {
   title: "Contact & réservation | Restaurant Ali Baba El Jadida",
   description:
-    "Réservez au Restaurant Ali Baba El Jadida par WhatsApp ou téléphone. Adresse : Route de Casablanca n°8, El Jadida."
+    "Réservation rapide Restaurant Ali Baba El Jadida par WhatsApp ou téléphone."
 };
 
 export default async function ContactPage() {

@@ -8,7 +8,7 @@ import { getSiteSettings } from "@/lib/settings";
 export const metadata: Metadata = {
   title: "Galerie | Restaurant Ali Baba El Jadida",
   description:
-    "Découvrez l’ambiance, les plats et les événements du Restaurant Ali Baba El Jadida en galerie."
+    "Galerie immersive du Restaurant Ali Baba El Jadida : ambiance, plats, salle et événements."
 };
 
 export default async function GalleryPage() {
@@ -20,14 +20,13 @@ export default async function GalleryPage() {
   return (
     <SiteChrome settings={settings}>
       <main>
-        <section className="moroccan-pattern bg-coffee px-5 py-20 text-center text-cream sm:py-24">
-          <p className="eyebrow">Galerie</p>
+        <section className="grain-overlay bg-[#10151e] px-5 py-20 text-center text-cream sm:py-24">
+          <p className="eyebrow !text-sand">Galerie immersive</p>
           <h1 className="mt-3 font-display text-6xl font-semibold leading-none sm:text-7xl">
-            Ambiance & assiettes
+            Salle, assiettes, moments
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl leading-8 text-cream/70">
-            Une sélection de visuels modifiables depuis le back-office : plats, salle,
-            événements et atmosphère du restaurant.
+          <p className="mx-auto mt-5 max-w-2xl leading-8 text-cream/75">
+            Une narration visuelle inspirée de l’univers réel du restaurant et de son identité en ligne.
           </p>
         </section>
         <GalleryEditorial

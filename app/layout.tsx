@@ -16,9 +16,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Restaurant Ali Baba El Jadida | Cuisine marocaine & méditerranéenne",
+  title: "Ali Baba El Jadida | Restaurant poissons & grillades",
   description:
-    "Découvrez Restaurant Ali Baba à El Jadida : cuisine marocaine et méditerranéenne, poissons, grillades, repas en famille, groupes et événements privés.",
+    "Ali Baba El Jadida : restaurant de poissons, grillades et cuisine marocaine, idéal pour familles, groupes et événements.",
   keywords: [
     "restaurant El Jadida",
     "restaurant Ali Baba El Jadida",
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Restaurant Ali Baba El Jadida",
     description:
-      "Cuisine marocaine et méditerranéenne, poissons, grillades, repas en famille, groupes et événements privés à El Jadida.",
+      "Poissons, grillades et cuisine marocaine dans une adresse chaleureuse à El Jadida.",
     type: "website",
     locale: "fr_MA",
     siteName: "Restaurant Ali Baba El Jadida",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1600&q=80",
+        url: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1600&q=80",
         width: 1600,
         height: 1067,
         alt: "Table élégante dans un restaurant chaleureux"

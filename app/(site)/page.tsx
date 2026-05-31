@@ -16,20 +16,13 @@ import { getPublicHomeData } from "@/lib/public-data";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
-  title: "Restaurant Ali Baba El Jadida | Cuisine marocaine & méditerranéenne",
+  title: "Ali Baba El Jadida | Poissons, grillades et cuisine marocaine",
   description:
-    "Découvrez Restaurant Ali Baba à El Jadida : cuisine marocaine et méditerranéenne, poissons, grillades, repas en famille, groupes et événements privés."
+    "Restaurant Ali Baba El Jadida : ambiance chaleureuse, poissons, grillades, cuisine marocaine et réservations groupe."
 };
 
 export default async function HomePage() {
-  const homeDataPromise = getPublicHomeData();
-  const [settings, homeData] = await Promise.all([
-    getSiteSettings(),
-    homeDataPromise
-  ]);
-  const dishes = homeData.dishes;
-  const gallery = homeData.gallery;
-  const events = homeData.events;
+  const [settings, homeData] = await Promise.all([getSiteSettings(), getPublicHomeData()]);
 
   const schema = {
     "@context": "https://schema.org",
@@ -43,19 +36,18 @@ export default async function HomePage() {
     },
     telephone: [settings.phone, settings.landline],
     servesCuisine: ["Marocaine", "Méditerranéenne", "Poissons", "Grillades"],
-    sameAs: [settings.instagramUrl],
-    priceRange: "$$"
+    sameAs: [settings.instagramUrl]
   };
 
   return (
     <SiteChrome settings={settings}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <main>
-        <Hero settings={settings} imageUrl={gallery[0]?.imageUrl} />
+        <Hero settings={settings} imageUrl={homeData.gallery[0]?.imageUrl} />
         <StorySection settings={settings} />
         <SpecialtiesBand />
         <MenuShowcase
-          dishes={dishes.map((dish: DishWithCategory) => ({
+          dishes={homeData.dishes.map((dish: DishWithCategory) => ({
             id: dish.id,
             name: dish.name,
             description: dish.description,
@@ -67,7 +59,7 @@ export default async function HomePage() {
         />
         <GalleryEditorial
           compact
-          images={gallery.map((image: GalleryImageModel) => ({
+          images={homeData.gallery.map((image: GalleryImageModel) => ({
             id: image.id,
             title: image.title,
             imageUrl: image.imageUrl,
@@ -78,7 +70,7 @@ export default async function HomePage() {
           settings={settings}
         />
         <EventCards
-          events={events.map((event: EventServiceModel) => ({
+          events={homeData.events.map((event: EventServiceModel) => ({
             id: event.id,
             title: event.title,
             description: event.description,
