@@ -13,10 +13,19 @@ const nav = [
   { href: "/galerie", label: "Galerie" },
   { href: "/evenements", label: "Événements" },
   { href: "/a-propos", label: "Maison" },
-  { href: "/contact", label: "Réserver" }
+  { href: "/reservation", label: "Réserver" },
+  { href: "/contact", label: "Contact" }
 ];
 
-export default function SiteHeader({ settings }: { settings: SiteSettings }) {
+export default function SiteHeader({
+  settings,
+  logo,
+  primaryColor
+}: {
+  settings: SiteSettings;
+  logo: string;
+  primaryColor: string;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const reservationUrl = useMemo(
@@ -28,8 +37,11 @@ export default function SiteHeader({ settings }: { settings: SiteSettings }) {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#11151d]/90 text-cream shadow-xl shadow-black/20 backdrop-blur-xl">
       <div className="section-shell flex h-20 items-center justify-between gap-5">
         <Link href="/" className="focus-ring flex items-center gap-3" aria-label="Retour à l'accueil">
-          <span className="grid h-11 w-11 place-items-center rounded-lg bg-copper font-bold text-cream">
-            AB
+          <span
+            className="grid h-11 min-w-11 place-items-center rounded-lg px-2 font-bold text-cream"
+            style={{ backgroundColor: primaryColor }}
+          >
+            {logo}
           </span>
           <span className="leading-none">
             <span className="block font-display text-[1.9rem] font-semibold">Ali Baba</span>
@@ -68,7 +80,8 @@ export default function SiteHeader({ settings }: { settings: SiteSettings }) {
             href={reservationUrl}
             target="_blank"
             rel="noreferrer"
-            className="focus-ring inline-flex items-center gap-2 rounded-lg bg-copper px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-cream transition hover:bg-terracotta"
+            className="focus-ring inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-cream transition hover:opacity-90"
+            style={{ backgroundColor: primaryColor }}
           >
             <MessageCircle size={16} aria-hidden />
             WhatsApp

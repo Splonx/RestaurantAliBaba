@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
 import GalleryEditorial from "@/components/site/GalleryEditorial";
 import SiteChrome from "@/components/site/SiteChrome";
 import type { GalleryImageModel } from "@/lib/prisma-types";
 import { getPublicGalleryData } from "@/lib/public-data";
+import { metadataForPath } from "@/lib/seo";
 import { getSiteSettings } from "@/lib/settings";
 
-export const metadata: Metadata = {
-  title: "Galerie | Restaurant Ali Baba El Jadida",
-  description:
-    "Galerie immersive du Restaurant Ali Baba El Jadida : ambiance, plats, salle et événements."
-};
+export const generateMetadata = () => metadataForPath("/galerie");
 
 export default async function GalleryPage() {
   const [settings, images] = await Promise.all([

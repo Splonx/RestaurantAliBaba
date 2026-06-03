@@ -23,6 +23,8 @@ type DishRow = {
   categoryId: string;
   categoryName: string;
   badge: string | null;
+  allergens: string | null;
+  isFeatured: boolean;
   isActive: boolean;
   sortOrder: number;
 };
@@ -34,6 +36,8 @@ const emptyDish: DishInput = {
   imageUrl: "",
   categoryId: "",
   badge: "",
+  allergens: "",
+  isFeatured: false,
   isActive: true,
   sortOrder: 0
 };
@@ -73,6 +77,8 @@ export default function MenuManager({
       imageUrl: dish.imageUrl ?? "",
       categoryId: dish.categoryId,
       badge: (dish.badge as DishInput["badge"]) ?? "",
+      allergens: dish.allergens ?? "",
+      isFeatured: dish.isFeatured,
       isActive: dish.isActive,
       sortOrder: dish.sortOrder
     });
@@ -162,6 +168,10 @@ export default function MenuManager({
               </select>
             </label>
             <label className="block">
+              <span className="text-sm font-semibold">Allergènes</span>
+              <input className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("allergens")} name="allergens" placeholder="Poisson, gluten, fruits à coque..." />
+            </label>
+            <label className="block">
               <span className="text-sm font-semibold">Ordre</span>
               <input type="number" min="0" className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("sortOrder", { valueAsNumber: true })} name="sortOrder" />
             </label>
@@ -172,6 +182,10 @@ export default function MenuManager({
             <label className="flex items-center gap-3 text-sm font-semibold">
               <input type="checkbox" className="h-4 w-4 accent-terracotta" {...register("isActive")} name="isActive" />
               Plat actif
+            </label>
+            <label className="flex items-center gap-3 text-sm font-semibold">
+              <input type="checkbox" className="h-4 w-4 accent-terracotta" {...register("isFeatured")} name="isFeatured" />
+              Plat signature
             </label>
           </div>
 
@@ -204,6 +218,7 @@ export default function MenuManager({
                 <th className="px-5 py-4">Catégorie</th>
                 <th className="px-5 py-4">Prix</th>
                 <th className="px-5 py-4">Badge</th>
+                <th className="px-5 py-4">Signature</th>
                 <th className="px-5 py-4">Ordre</th>
                 <th className="px-5 py-4">Statut</th>
                 <th className="px-5 py-4">Actions</th>
@@ -211,7 +226,7 @@ export default function MenuManager({
             </thead>
             <tbody>
               {dishes.length === 0 ? (
-                <tr><td colSpan={7} className="px-5 py-10 text-center text-coffee/55">Aucun plat. Ajoutez le premier élément de carte.</td></tr>
+                <tr><td colSpan={8} className="px-5 py-10 text-center text-coffee/55">Aucun plat. Ajoutez le premier élément de carte.</td></tr>
               ) : dishes.map((dish) => (
                 <tr key={dish.id} className="border-b border-coffee/10 last:border-0">
                   <td className="px-5 py-4">
@@ -226,6 +241,7 @@ export default function MenuManager({
                   <td className="px-5 py-4">{dish.categoryName}</td>
                   <td className="px-5 py-4">{dish.price || "Disponible au restaurant"}</td>
                   <td className="px-5 py-4">{dish.badge || "Aucun"}</td>
+                  <td className="px-5 py-4">{dish.isFeatured ? "Oui" : "Non"}</td>
                   <td className="px-5 py-4">{dish.sortOrder}</td>
                   <td className="px-5 py-4">{dish.isActive ? "Actif" : "Inactif"}</td>
                   <td className="px-5 py-4">

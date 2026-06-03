@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
 import EventCards from "@/components/site/EventCards";
 import SiteChrome from "@/components/site/SiteChrome";
 import type { EventServiceModel } from "@/lib/prisma-types";
 import { getPublicEventsData } from "@/lib/public-data";
+import { metadataForPath } from "@/lib/seo";
 import { getSiteSettings } from "@/lib/settings";
 
-export const metadata: Metadata = {
-  title: "Événements privés | Restaurant Ali Baba El Jadida",
-  description:
-    "Organisez vos événements privés et repas de groupe au Restaurant Ali Baba El Jadida."
-};
+export const generateMetadata = () => metadataForPath("/evenements");
 
 export default async function EventsPage() {
   const [settings, events] = await Promise.all([
@@ -36,6 +32,8 @@ export default async function EventsPage() {
             id: event.id,
             title: event.title,
             description: event.description,
+            type: event.type,
+            capacity: event.capacity,
             imageUrl: event.imageUrl
           }))}
           settings={settings}

@@ -1,5 +1,8 @@
+"use client";
+
 import { Instagram } from "lucide-react";
 import Image from "next/image";
+import { useMemo, useState } from "react";
 import Reveal from "@/components/site/Reveal";
 import SectionIntro from "@/components/site/SectionIntro";
 import type { SiteSettings } from "@/lib/settings";
@@ -22,7 +25,11 @@ export default function GalleryEditorial({
   settings: SiteSettings;
   compact?: boolean;
 }) {
-  const visible = compact ? images.slice(0, 6) : images;
+  const filters = useMemo(() => ["Tout", ...Array.from(new Set(images.map((image) => image.type)))], [images]);
+  const [activeFilter, setActiveFilter] = useState("Tout");
+  const filteredImages =
+    activeFilter === "Tout" ? images : images.filter((image) => image.type === activeFilter);
+  const visible = compact ? filteredImages.slice(0, 6) : filteredImages;
 
   return (
     <section className="bg-[#0f141c] py-24 text-cream sm:py-28">
@@ -45,6 +52,23 @@ export default function GalleryEditorial({
               Voir Instagram
             </a>
           </Reveal>
+        </div>
+
+        <div className="mt-10 flex flex-wrap justify-center gap-2 lg:justify-start">
+          {filters.map((filter) => (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setActiveFilter(filter)}
+              className={`focus-ring rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] transition ${
+                activeFilter === filter
+                  ? "border-sand bg-sand text-coffee"
+                  : "border-white/15 bg-white/[0.04] text-cream/80 hover:border-sand hover:text-sand"
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
         </div>
 
         <div className="mt-12 columns-1 gap-4 sm:columns-2 xl:columns-3">

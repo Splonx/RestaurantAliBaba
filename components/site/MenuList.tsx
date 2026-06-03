@@ -12,6 +12,7 @@ type MenuCategory = {
     price: string | null;
     imageUrl: string | null;
     badge: string | null;
+    allergens: string | null;
   }[];
 };
 
@@ -98,6 +99,11 @@ export default function MenuList({ categories }: { categories: MenuCategory[] })
                           </p>
                         </div>
                         <p className="mt-2 line-clamp-3 text-sm leading-6 text-coffee/70">{dish.description}</p>
+                        {dish.allergens ? (
+                          <p className="mt-2 text-[0.68rem] font-bold uppercase tracking-[0.1em] text-olive">
+                            Allergènes : {dish.allergens}
+                          </p>
+                        ) : null}
                       </div>
                     </article>
                   ))}

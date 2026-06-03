@@ -19,6 +19,8 @@ export default async function AdminEventsPage() {
           id: event.id,
           title: event.title,
           description: event.description,
+          type: event.type,
+          capacity: event.capacity,
           imageUrl: event.imageUrl,
           isActive: event.isActive,
           sortOrder: event.sortOrder

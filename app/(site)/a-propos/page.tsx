@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
 import ContactSection from "@/components/site/ContactSection";
 import SiteChrome from "@/components/site/SiteChrome";
 import SpecialtiesBand from "@/components/site/SpecialtiesBand";
 import StorySection from "@/components/site/StorySection";
+import { metadataForPath } from "@/lib/seo";
 import { getSiteSettings } from "@/lib/settings";
 
-export const metadata: Metadata = {
-  title: "À propos | Restaurant Ali Baba El Jadida",
-  description:
-    "Découvrez l’histoire et l’ambiance du Restaurant Ali Baba El Jadida, adresse chaleureuse de cuisine marocaine et méditerranéenne."
-};
+export const generateMetadata = () => metadataForPath("/a-propos");
 
 export default async function AboutPage() {
   const settings = await getSiteSettings();

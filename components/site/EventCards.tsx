@@ -9,6 +9,8 @@ type EventItem = {
   id: string;
   title: string;
   description: string;
+  type: string;
+  capacity: string | null;
   imageUrl: string | null;
 };
 
@@ -65,6 +67,9 @@ export default function EventCards({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
                 </div>
                 <div className="p-5">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-sand">
+                    {event.type}{event.capacity ? ` · ${event.capacity}` : ""}
+                  </p>
                   <h3 className="font-display text-3xl font-semibold text-cream">{event.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-cream/75">{event.description}</p>
                 </div>

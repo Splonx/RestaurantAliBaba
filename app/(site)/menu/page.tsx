@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
 import MenuList from "@/components/site/MenuList";
 import SiteChrome from "@/components/site/SiteChrome";
 import type { CategoryWithDishes, DishModel } from "@/lib/prisma-types";
 import { getPublicMenuData } from "@/lib/public-data";
+import { metadataForPath } from "@/lib/seo";
 import { getSiteSettings } from "@/lib/settings";
 
-export const metadata: Metadata = {
-  title: "Menu | Restaurant Ali Baba El Jadida",
-  description:
-    "Carte Restaurant Ali Baba El Jadida : entrées, poissons, grillades, cuisine marocaine, desserts et boissons."
-};
+export const generateMetadata = () => metadataForPath("/menu");
 
 export default async function MenuPage() {
   const [settings, categories] = await Promise.all([
@@ -40,7 +36,8 @@ export default async function MenuPage() {
               description: dish.description,
               price: dish.price,
               imageUrl: dish.imageUrl,
-              badge: dish.badge
+              badge: dish.badge,
+              allergens: dish.allergens
             }))
           }))}
         />

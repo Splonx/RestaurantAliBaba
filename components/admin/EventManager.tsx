@@ -13,6 +13,8 @@ type EventRow = {
   id: string;
   title: string;
   description: string;
+  type: string;
+  capacity: string | null;
   imageUrl: string | null;
   isActive: boolean;
   sortOrder: number;
@@ -21,6 +23,8 @@ type EventRow = {
 const emptyEvent: EventInput = {
   title: "",
   description: "",
+  type: "événement privé",
+  capacity: "",
   imageUrl: "",
   isActive: true,
   sortOrder: 0
@@ -51,6 +55,8 @@ export default function EventManager({ events }: { events: EventRow[] }) {
       id: event.id,
       title: event.title,
       description: event.description,
+      type: event.type,
+      capacity: event.capacity ?? "",
       imageUrl: event.imageUrl ?? "",
       isActive: event.isActive,
       sortOrder: event.sortOrder
@@ -104,6 +110,22 @@ export default function EventManager({ events }: { events: EventRow[] }) {
             <textarea className="focus-ring mt-2 min-h-32 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("description")} name="description" />
             {formState.errors.description ? <p className="mt-1 text-xs text-terracotta">{formState.errors.description.message}</p> : null}
           </label>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <label className="block">
+              <span className="text-sm font-semibold">Type</span>
+              <select className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("type")} name="type">
+                <option value="mariage">Mariage</option>
+                <option value="anniversaire">Anniversaire</option>
+                <option value="repas de groupe">Repas de groupe</option>
+                <option value="événement privé">Événement privé</option>
+                <option value="entreprise">Entreprise</option>
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-sm font-semibold">Capacité</span>
+              <input className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("capacity")} name="capacity" placeholder="Sur demande" />
+            </label>
+          </div>
           <label className="mt-4 block">
             <span className="text-sm font-semibold">Ordre</span>
             <input type="number" min="0" className="focus-ring mt-2 w-full rounded-lg border border-coffee/10 px-4 py-3 outline-none" {...register("sortOrder", { valueAsNumber: true })} name="sortOrder" />
@@ -133,7 +155,8 @@ export default function EventManager({ events }: { events: EventRow[] }) {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="font-semibold text-coffee">{event.title}</p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.14em] text-terracotta">{event.isActive ? "Actif" : "Inactif"} • #{event.sortOrder}</p>
+                    <p className="mt-1 text-xs uppercase tracking-[0.14em] text-terracotta">{event.type}{event.capacity ? ` • ${event.capacity}` : ""}</p>
+                    <p className="mt-1 text-xs uppercase tracking-[0.14em] text-coffee/50">{event.isActive ? "Actif" : "Inactif"} • #{event.sortOrder}</p>
                   </div>
                 </div>
                 <p className="mt-3 line-clamp-3 text-sm leading-6 text-coffee/60">{event.description}</p>

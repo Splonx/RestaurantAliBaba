@@ -26,6 +26,8 @@ model Dish {
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   badge       String?
+  allergens   String?
+  isFeatured  Boolean  @default(false)
   isActive    Boolean  @default(true)
   sortOrder   Int      @default(0)
   createdAt   DateTime @default(now())
@@ -48,6 +50,8 @@ model EventService {
   id          String   @id @default(cuid())
   title       String
   description String
+  type        String   @default("événement privé")
+  capacity    String?
   imageUrl    String?
   isActive    Boolean  @default(true)
   sortOrder   Int      @default(0)
@@ -59,6 +63,64 @@ model SiteSetting {
   id        String   @id @default(cuid())
   key       String   @unique
   value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reservation {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  date      String
+  time      String
+  guests    Int
+  message   String?
+  status    String   @default("nouvelle")
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  author     String
+  quote      String
+  context    String?
+  isFeatured Boolean  @default(false)
+  isActive   Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model SeoPage {
+  id          String   @id @default(cuid())
+  path        String   @unique
+  title       String
+  description String
+  keywords    String?
+  ogImage     String?
+  slug        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BrandAsset {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  label     String
+  value     String
+  type      String   @default("text")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("Admin")
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

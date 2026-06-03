@@ -1,4 +1,4 @@
-import { Camera, CalendarHeart, Layers3, Tags, Utensils } from "lucide-react";
+import { Camera, CalendarHeart, ClipboardList, Layers3, Star, Tags, Utensils } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
 import { formatDateTime } from "@/lib/format";
@@ -10,6 +10,8 @@ type DashboardStats = {
   categoryCount: number;
   galleryCount: number;
   eventCount: number;
+  reservationCount: number;
+  testimonialCount: number;
   latest: Date | undefined;
 };
 
@@ -29,13 +31,19 @@ async function getStats(): Promise<DashboardStats> {
     prisma.category.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
     prisma.galleryImage.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
     prisma.eventService.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.reservation.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.testimonial.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.seoPage.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
+    prisma.brandAsset.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } }),
     prisma.siteSetting.findFirst({ orderBy: { updatedAt: "desc" }, select: { updatedAt: true } })
   ]);
-  const [dishCount, categoryCount, galleryCount, eventCount, latestRows] = await Promise.all([
+  const [dishCount, categoryCount, galleryCount, eventCount, reservationCount, testimonialCount, latestRows] = await Promise.all([
     prisma.dish.count(),
     prisma.category.count(),
     prisma.galleryImage.count(),
     prisma.eventService.count(),
+    prisma.reservation.count(),
+    prisma.testimonial.count(),
     latestRowsQuery
   ]);
 
@@ -44,7 +52,7 @@ async function getStats(): Promise<DashboardStats> {
     .filter(isDate)
     .sort((left: Date, right: Date) => Number(right) - Number(left))[0];
 
-  return { dishCount, categoryCount, galleryCount, eventCount, latest };
+  return { dishCount, categoryCount, galleryCount, eventCount, reservationCount, testimonialCount, latest };
 }
 
 export default async function DashboardPage() {
@@ -53,7 +61,9 @@ export default async function DashboardPage() {
     { label: "Plats", value: stats.dishCount, icon: Utensils },
     { label: "Catégories", value: stats.categoryCount, icon: Tags },
     { label: "Images galerie", value: stats.galleryCount, icon: Camera },
-    { label: "Événements", value: stats.eventCount, icon: CalendarHeart }
+    { label: "Événements", value: stats.eventCount, icon: CalendarHeart },
+    { label: "Réservations", value: stats.reservationCount, icon: ClipboardList },
+    { label: "Avis", value: stats.testimonialCount, icon: Star }
   ];
 
   return (
@@ -63,7 +73,7 @@ export default async function DashboardPage() {
         text="Vue rapide du contenu publié et des éléments gérés depuis le back-office."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
@@ -95,9 +105,9 @@ export default async function DashboardPage() {
             <p className="font-display text-3xl font-semibold">Dernière modification</p>
             <p className="mt-2 text-cream/70">{formatDateTime(stats.latest)}</p>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-cream/60">
-              Le propriétaire peut modifier les plats, catégories, galerie, événements et textes
-              du site sans toucher au code. Les images uploadées sont stockées localement dans
-              `public/uploads` en développement.
+              Le propriétaire peut modifier les plats, catégories, galerie, événements,
+              réservations, avis, SEO, branding et textes du site sans toucher au code.
+              Les uploads utilisent Cloudinary si les variables CLOUDINARY_* sont configurées.
             </p>
           </div>
         </div>

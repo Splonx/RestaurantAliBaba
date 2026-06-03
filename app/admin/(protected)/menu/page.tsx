@@ -32,6 +32,8 @@ export default async function AdminMenuPage() {
           categoryId: dish.categoryId,
           categoryName: dish.category.name,
           badge: dish.badge,
+          allergens: dish.allergens,
+          isFeatured: dish.isFeatured,
           isActive: dish.isActive,
           sortOrder: dish.sortOrder
         }))}

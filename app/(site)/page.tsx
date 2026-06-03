@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import ContactSection from "@/components/site/ContactSection";
 import EventCards from "@/components/site/EventCards";
 import GalleryEditorial from "@/components/site/GalleryEditorial";
@@ -7,22 +6,25 @@ import MenuShowcase from "@/components/site/MenuShowcase";
 import SiteChrome from "@/components/site/SiteChrome";
 import SpecialtiesBand from "@/components/site/SpecialtiesBand";
 import StorySection from "@/components/site/StorySection";
+import TestimonialStrip from "@/components/site/TestimonialStrip";
 import type {
   DishWithCategory,
   EventServiceModel,
   GalleryImageModel
 } from "@/lib/prisma-types";
-import { getPublicHomeData } from "@/lib/public-data";
+import { getBrandAssetValue, getPublicHomeData } from "@/lib/public-data";
+import { metadataForPath } from "@/lib/seo";
 import { getSiteSettings } from "@/lib/settings";
 
-export const metadata: Metadata = {
-  title: "Ali Baba El Jadida | Poissons, grillades et cuisine marocaine",
-  description:
-    "Restaurant Ali Baba El Jadida : ambiance chaleureuse, poissons, grillades, cuisine marocaine et réservations groupe."
-};
+export const generateMetadata = () => metadataForPath("/");
 
 export default async function HomePage() {
   const [settings, homeData] = await Promise.all([getSiteSettings(), getPublicHomeData()]);
+  const heroImage = getBrandAssetValue(
+    homeData.brandAssets,
+    "heroImage",
+    homeData.gallery[0]?.imageUrl
+  );
 
   const schema = {
     "@context": "https://schema.org",
@@ -43,7 +45,7 @@ export default async function HomePage() {
     <SiteChrome settings={settings}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <main>
-        <Hero settings={settings} imageUrl={homeData.gallery[0]?.imageUrl} />
+        <Hero settings={settings} imageUrl={heroImage} />
         <StorySection settings={settings} />
         <SpecialtiesBand />
         <MenuShowcase
@@ -54,6 +56,7 @@ export default async function HomePage() {
             price: dish.price,
             imageUrl: dish.imageUrl,
             badge: dish.badge,
+            allergens: dish.allergens,
             categoryName: dish.category.name
           }))}
         />
@@ -74,9 +77,19 @@ export default async function HomePage() {
             id: event.id,
             title: event.title,
             description: event.description,
+            type: event.type,
+            capacity: event.capacity,
             imageUrl: event.imageUrl
           }))}
           settings={settings}
+        />
+        <TestimonialStrip
+          testimonials={homeData.testimonials.map((testimonial) => ({
+            id: testimonial.id,
+            author: testimonial.author,
+            quote: testimonial.quote,
+            context: testimonial.context
+          }))}
         />
         <ContactSection settings={settings} />
       </main>

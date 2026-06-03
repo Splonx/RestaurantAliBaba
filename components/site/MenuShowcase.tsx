@@ -12,6 +12,7 @@ type DishCard = {
   price: string | null;
   imageUrl: string | null;
   badge: string | null;
+  allergens: string | null;
   categoryName?: string;
 };
 
@@ -64,6 +65,11 @@ export default function MenuShowcase({ dishes }: { dishes: DishCard[] }) {
                     {dish.name}
                   </h3>
                   <p className="mt-3 line-clamp-3 text-sm leading-6 text-coffee/70">{dish.description}</p>
+                  {dish.allergens ? (
+                    <p className="mt-3 text-xs font-semibold uppercase tracking-[0.08em] text-olive">
+                      Allergènes : {dish.allergens}
+                    </p>
+                  ) : null}
                   <p className="mt-4 text-sm font-bold uppercase tracking-[0.1em] text-copper">
                     {displayPrice(dish.price)}
                   </p>

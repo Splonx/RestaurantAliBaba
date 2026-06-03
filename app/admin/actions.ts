@@ -7,11 +7,16 @@ import { slugify } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
 import { saveUploadedImage } from "@/lib/uploads";
 import {
+  adminUserSchema,
+  brandAssetSchema,
   categorySchema,
   dishSchema,
   eventSchema,
   gallerySchema,
-  settingsSchema
+  reservationSchema,
+  seoPageSchema,
+  settingsSchema,
+  testimonialSchema
 } from "@/lib/validators";
 
 type ActionState = {
@@ -47,6 +52,7 @@ function refreshAdmin(paths: string[]) {
   revalidatePath("/evenements");
   revalidatePath("/contact");
   revalidatePath("/a-propos");
+  revalidatePath("/reservation");
 }
 
 export async function loginAction(
@@ -142,6 +148,8 @@ export async function saveDishAction(formData: FormData): Promise<ActionState> {
       imageUrl: imageUrl ?? "",
       categoryId: stringValue(formData, "categoryId"),
       badge: stringValue(formData, "badge"),
+      allergens: stringValue(formData, "allergens"),
+      isFeatured: checkbox(formData, "isFeatured"),
       isActive: checkbox(formData, "isActive"),
       sortOrder: stringValue(formData, "sortOrder") || "0"
     });
@@ -153,6 +161,8 @@ export async function saveDishAction(formData: FormData): Promise<ActionState> {
       imageUrl: optionalString(parsed.imageUrl ?? ""),
       categoryId: parsed.categoryId,
       badge: optionalString(parsed.badge ?? ""),
+      allergens: optionalString(parsed.allergens ?? ""),
+      isFeatured: parsed.isFeatured,
       isActive: parsed.isActive,
       sortOrder: parsed.sortOrder
     };
@@ -240,6 +250,8 @@ export async function saveEventAction(formData: FormData): Promise<ActionState> 
       id: stringValue(formData, "id") || undefined,
       title: stringValue(formData, "title"),
       description: stringValue(formData, "description"),
+      type: stringValue(formData, "type") || "événement privé",
+      capacity: stringValue(formData, "capacity"),
       imageUrl: imageUrl ?? "",
       isActive: checkbox(formData, "isActive"),
       sortOrder: stringValue(formData, "sortOrder") || "0"
@@ -248,6 +260,8 @@ export async function saveEventAction(formData: FormData): Promise<ActionState> 
     const data = {
       title: parsed.title,
       description: parsed.description,
+      type: parsed.type,
+      capacity: optionalString(parsed.capacity ?? ""),
       imageUrl: optionalString(parsed.imageUrl ?? ""),
       isActive: parsed.isActive,
       sortOrder: parsed.sortOrder
@@ -308,5 +322,235 @@ export async function saveSettingsAction(formData: FormData): Promise<ActionStat
     return { ok: true, message: "Contenu du site enregistré." };
   } catch (error) {
     return { ok: false, message: error instanceof Error ? error.message : "Erreur réglages." };
+  }
+}
+
+export async function createReservationAction(formData: FormData): Promise<ActionState> {
+  try {
+    const parsed = reservationSchema.parse({
+      name: stringValue(formData, "name"),
+      phone: stringValue(formData, "phone"),
+      date: stringValue(formData, "date"),
+      time: stringValue(formData, "time"),
+      guests: stringValue(formData, "guests"),
+      message: stringValue(formData, "message"),
+      status: "nouvelle",
+      notes: ""
+    });
+
+    await prisma.reservation.create({
+      data: {
+        name: parsed.name,
+        phone: parsed.phone,
+        date: parsed.date,
+        time: parsed.time,
+        guests: parsed.guests,
+        message: optionalString(parsed.message ?? "")
+      }
+    });
+
+    revalidatePath("/admin/reservations");
+    return { ok: true, message: "Demande envoyée. Le restaurant vous recontacte rapidement." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur réservation." };
+  }
+}
+
+export async function updateReservationAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const parsed = reservationSchema.parse({
+      id: stringValue(formData, "id"),
+      name: stringValue(formData, "name"),
+      phone: stringValue(formData, "phone"),
+      date: stringValue(formData, "date"),
+      time: stringValue(formData, "time"),
+      guests: stringValue(formData, "guests"),
+      message: stringValue(formData, "message"),
+      status: stringValue(formData, "status") || "nouvelle",
+      notes: stringValue(formData, "notes")
+    });
+    if (!parsed.id) return { ok: false, message: "Réservation introuvable." };
+
+    await prisma.reservation.update({
+      where: { id: parsed.id },
+      data: {
+        name: parsed.name,
+        phone: parsed.phone,
+        date: parsed.date,
+        time: parsed.time,
+        guests: parsed.guests,
+        message: optionalString(parsed.message ?? ""),
+        status: parsed.status,
+        notes: optionalString(parsed.notes ?? "")
+      }
+    });
+
+    refreshAdmin(["/admin/reservations", "/admin/dashboard"]);
+    return { ok: true, message: "Réservation mise à jour." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur réservation." };
+  }
+}
+
+export async function deleteReservationAction(id: string): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    await prisma.reservation.delete({ where: { id } });
+    refreshAdmin(["/admin/reservations", "/admin/dashboard"]);
+    return { ok: true, message: "Réservation supprimée." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur suppression." };
+  }
+}
+
+export async function saveTestimonialAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const parsed = testimonialSchema.parse({
+      id: stringValue(formData, "id") || undefined,
+      author: stringValue(formData, "author"),
+      quote: stringValue(formData, "quote"),
+      context: stringValue(formData, "context"),
+      isFeatured: checkbox(formData, "isFeatured"),
+      isActive: checkbox(formData, "isActive"),
+      sortOrder: stringValue(formData, "sortOrder") || "0"
+    });
+    const data = {
+      author: parsed.author,
+      quote: parsed.quote,
+      context: optionalString(parsed.context ?? ""),
+      isFeatured: parsed.isFeatured,
+      isActive: parsed.isActive,
+      sortOrder: parsed.sortOrder
+    };
+    if (parsed.id) {
+      await prisma.testimonial.update({ where: { id: parsed.id }, data });
+    } else {
+      await prisma.testimonial.create({ data });
+    }
+    refreshAdmin(["/admin/avis", "/admin/dashboard"]);
+    return { ok: true, message: "Avis enregistré." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur avis." };
+  }
+}
+
+export async function deleteTestimonialAction(id: string): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    await prisma.testimonial.delete({ where: { id } });
+    refreshAdmin(["/admin/avis", "/admin/dashboard"]);
+    return { ok: true, message: "Avis supprimé." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur suppression." };
+  }
+}
+
+export async function saveSeoPageAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const parsed = seoPageSchema.parse({
+      id: stringValue(formData, "id") || undefined,
+      path: stringValue(formData, "path"),
+      title: stringValue(formData, "title"),
+      description: stringValue(formData, "description"),
+      keywords: stringValue(formData, "keywords"),
+      ogImage: stringValue(formData, "ogImage"),
+      slug: stringValue(formData, "slug")
+    });
+    const data = {
+      path: parsed.path,
+      title: parsed.title,
+      description: parsed.description,
+      keywords: optionalString(parsed.keywords ?? ""),
+      ogImage: optionalString(parsed.ogImage ?? ""),
+      slug: optionalString(parsed.slug ?? "")
+    };
+    if (parsed.id) {
+      await prisma.seoPage.update({ where: { id: parsed.id }, data });
+    } else {
+      await prisma.seoPage.upsert({
+        where: { path: parsed.path },
+        update: data,
+        create: data
+      });
+    }
+    refreshAdmin(["/admin/seo", parsed.path]);
+    return { ok: true, message: "SEO enregistré." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur SEO." };
+  }
+}
+
+export async function saveBrandAssetAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const uploaded = await saveUploadedImage(formData.get("imageFile") as File | null, "branding");
+    const parsed = brandAssetSchema.parse({
+      id: stringValue(formData, "id") || undefined,
+      key: stringValue(formData, "key"),
+      label: stringValue(formData, "label"),
+      value: uploaded ?? stringValue(formData, "value"),
+      type: stringValue(formData, "type") || "text"
+    });
+    const data = {
+      key: parsed.key,
+      label: parsed.label,
+      value: parsed.value,
+      type: parsed.type
+    };
+    if (parsed.id) {
+      await prisma.brandAsset.update({ where: { id: parsed.id }, data });
+    } else {
+      await prisma.brandAsset.upsert({
+        where: { key: parsed.key },
+        update: data,
+        create: data
+      });
+    }
+    refreshAdmin(["/admin/branding", "/admin/dashboard"]);
+    return { ok: true, message: "Branding enregistré." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur branding." };
+  }
+}
+
+export async function saveAdminUserAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const parsed = adminUserSchema.parse({
+      id: stringValue(formData, "id") || undefined,
+      email: stringValue(formData, "email"),
+      name: stringValue(formData, "name"),
+      role: stringValue(formData, "role") || "Manager",
+      isActive: checkbox(formData, "isActive")
+    });
+    const data = {
+      email: parsed.email,
+      name: parsed.name,
+      role: parsed.role,
+      isActive: parsed.isActive
+    };
+    if (parsed.id) {
+      await prisma.adminUser.update({ where: { id: parsed.id }, data });
+    } else {
+      await prisma.adminUser.create({ data });
+    }
+    refreshAdmin(["/admin/users", "/admin/dashboard"]);
+    return { ok: true, message: "Utilisateur enregistré." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur utilisateur." };
+  }
+}
+
+export async function deleteAdminUserAction(id: string): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    await prisma.adminUser.delete({ where: { id } });
+    refreshAdmin(["/admin/users", "/admin/dashboard"]);
+    return { ok: true, message: "Utilisateur supprimé." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur suppression." };
   }
 }

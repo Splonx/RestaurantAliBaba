@@ -1,13 +1,18 @@
 "use client";
 
 import {
+  ClipboardList,
   GalleryHorizontalEnd,
   LayoutDashboard,
   LogOut,
   Menu as MenuIcon,
+  Palette,
+  Search,
   Settings,
+  Star,
   Tags,
   Utensils,
+  Users,
   Wine
 } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +26,12 @@ const links = [
   { href: "/admin/categories", label: "Catégories", icon: Tags },
   { href: "/admin/galerie", label: "Galerie", icon: GalleryHorizontalEnd },
   { href: "/admin/evenements", label: "Événements", icon: Wine },
-  { href: "/admin/settings", label: "Contenu site", icon: Settings }
+  { href: "/admin/reservations", label: "Réservations", icon: ClipboardList },
+  { href: "/admin/avis", label: "Avis clients", icon: Star },
+  { href: "/admin/seo", label: "SEO", icon: Search },
+  { href: "/admin/branding", label: "Branding", icon: Palette },
+  { href: "/admin/settings", label: "Contenu site", icon: Settings },
+  { href: "/admin/users", label: "Utilisateurs", icon: Users }
 ];
 
 export default function AdminShell({ children }: { children: ReactNode }) {
