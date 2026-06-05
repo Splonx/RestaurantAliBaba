@@ -13,6 +13,7 @@ const nav = [
   { href: "/galerie", label: "Galerie" },
   { href: "/evenements", label: "Événements" },
   { href: "/a-propos", label: "Maison" },
+  { href: "/fidelite", label: "Fidélité" },
   { href: "/reservation", label: "Réserver" },
   { href: "/contact", label: "Contact" }
 ];

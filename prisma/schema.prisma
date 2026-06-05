@@ -124,3 +124,92 @@ model AdminUser {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+enum LoyaltyCustomerStatus {
+  ACTIVE
+  BLOCKED
+}
+
+enum LoyaltyRewardType {
+  DISCOUNT_25
+  DISCOUNT_50
+}
+
+enum LoyaltyRewardStatus {
+  AVAILABLE
+  USED
+  EXPIRED
+  CANCELLED
+}
+
+enum LoyaltyTransactionType {
+  CARD_CREATED
+  STAMP_ADDED
+  STAMP_REMOVED
+  REWARD_UNLOCKED
+  REWARD_USED
+  RESET
+  BLOCKED
+  UNBLOCKED
+  MANUAL_ADJUSTMENT
+}
+
+model LoyaltyCustomer {
+  id                String                @id @default(cuid())
+  firstName         String
+  lastName          String?
+  phone             String                @unique
+  email             String?
+  publicToken       String                @unique
+  stampCount        Int                   @default(0)
+  lifetimePurchases Int                   @default(0)
+  cycleNumber       Int                   @default(1)
+  status            LoyaltyCustomerStatus @default(ACTIVE)
+  walletProvider    String?
+  walletPassId      String?
+  walletLastSyncAt  DateTime?
+  rewards           LoyaltyReward[]
+  transactions      LoyaltyTransaction[]
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model LoyaltyReward {
+  id           String               @id @default(cuid())
+  customerId   String
+  customer     LoyaltyCustomer      @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  cycleNumber  Int
+  type         LoyaltyRewardType
+  status       LoyaltyRewardStatus  @default(AVAILABLE)
+  unlockedAt   DateTime             @default(now())
+  usedAt       DateTime?
+  transactions LoyaltyTransaction[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@unique([customerId, cycleNumber, type])
+  @@index([status])
+}
+
+model LoyaltyTransaction {
+  id          String                 @id @default(cuid())
+  customerId  String
+  customer    LoyaltyCustomer        @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  cycleNumber Int
+  type        LoyaltyTransactionType
+  stampDelta  Int?
+  rewardId    String?
+  reward      LoyaltyReward?         @relation(fields: [rewardId], references: [id], onDelete: SetNull)
+  adminId     String?
+  note        String?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime               @default(now())
+
+  @@index([customerId, createdAt])
+  @@index([type])
+  @@index([adminId])
+}

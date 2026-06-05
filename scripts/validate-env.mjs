@@ -38,7 +38,7 @@ if (process.env.VERCEL === "1") {
   const isLocalHost = /@(?:127\.0\.0\.1|localhost)(?::\d+)?\//i.test(databaseUrl);
   if (isLocalHost) {
     console.error(
-      "Build aborted: DATABASE_URL points to localhost on Vercel. Configure a managed PostgreSQL URL (Neon/Supabase) in Vercel environment variables."
+      "Build aborted: DATABASE_URL points to localhost on Vercel. Configure a managed PostgreSQL URL (Neon) in Vercel environment variables."
     );
     process.exit(1);
   }

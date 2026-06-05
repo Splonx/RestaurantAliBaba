@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-label="Ali Baba">
+  <rect width="192" height="192" rx="34" fill="#2B1B15"/>
+  <rect x="18" y="18" width="156" height="156" rx="26" fill="#F7F1E8"/>
+  <circle cx="96" cy="72" r="28" fill="#B95C3C"/>
+  <text x="96" y="125" text-anchor="middle" font-family="Georgia, serif" font-size="45" font-weight="700" fill="#2B1B15">AB</text>
+  <path d="M54 145h84" stroke="#B8793D" stroke-width="8" stroke-linecap="round"/>
+</svg>

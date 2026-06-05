@@ -1,9 +1,20 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { LoyaltyRewardType } from "@prisma/client";
 import { clearAdminSession, createAdminSession, requireAdmin, verifyAdminCredentials } from "@/lib/auth";
 import { slugify } from "@/lib/format";
+import {
+  addStamp,
+  blockCard,
+  createLoyaltyCard,
+  findCard,
+  removeStamp,
+  unblockCard,
+  useReward
+} from "@/lib/loyalty";
 import { prisma } from "@/lib/prisma";
 import { saveUploadedImage } from "@/lib/uploads";
 import {
@@ -13,6 +24,9 @@ import {
   dishSchema,
   eventSchema,
   gallerySchema,
+  loyaltyAdminActionSchema,
+  loyaltyCardSchema,
+  loyaltyLookupSchema,
   reservationSchema,
   seoPageSchema,
   settingsSchema,
@@ -55,6 +69,26 @@ function refreshAdmin(paths: string[]) {
   revalidatePath("/reservation");
 }
 
+async function requestMeta(note?: string) {
+  const headerStore = await headers();
+  return {
+    note,
+    ipAddress:
+      headerStore.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      headerStore.get("x-real-ip") ??
+      undefined,
+    userAgent: headerStore.get("user-agent") ?? undefined
+  };
+}
+
+async function adminActionMeta(note: string) {
+  const session = await requireAdmin();
+  return {
+    ...(await requestMeta(note)),
+    adminId: session.sub
+  };
+}
+
 export async function loginAction(
   _previousState: ActionState,
   formData: FormData
@@ -76,6 +110,135 @@ export async function loginAction(
 export async function logoutAction() {
   await clearAdminSession();
   redirect("/admin/login");
+}
+
+export async function createLoyaltyCardAction(formData: FormData): Promise<ActionState> {
+  let redirectTo = "";
+  try {
+    const parsed = loyaltyCardSchema.parse({
+      firstName: stringValue(formData, "firstName"),
+      lastName: stringValue(formData, "lastName"),
+      phone: stringValue(formData, "phone"),
+      email: stringValue(formData, "email"),
+      consentAccepted: checkbox(formData, "consentAccepted")
+    });
+
+    const result = await createLoyaltyCard({
+      ...parsed,
+      ...(await requestMeta())
+    });
+
+    revalidatePath("/fidelite");
+    redirectTo = `/fidelite/${result.customer.publicToken}`;
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "Erreur création carte."
+    };
+  }
+
+  redirect(redirectTo);
+}
+
+export async function lookupLoyaltyCardAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  let redirectTo = "";
+  try {
+    const parsed = loyaltyLookupSchema.parse({ query: stringValue(formData, "query") });
+    const card = await findCard({
+      publicToken: parsed.query,
+      phone: parsed.query
+    });
+
+    if (!card) return { ok: false, message: "Carte introuvable." };
+    redirectTo = `/admin/fidelite?client=${card.publicToken}`;
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur recherche." };
+  }
+
+  redirect(redirectTo);
+}
+
+export async function scanLookupLoyaltyCardAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  let redirectTo = "";
+  try {
+    const parsed = loyaltyLookupSchema.parse({ query: stringValue(formData, "query") });
+    const card = await findCard({
+      publicToken: parsed.query,
+      phone: parsed.query
+    });
+
+    if (!card) return { ok: false, message: "Carte introuvable." };
+    redirectTo = `/admin/fidelite/scan?client=${card.publicToken}`;
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur recherche." };
+  }
+
+  redirect(redirectTo);
+}
+
+async function loyaltyMutation(
+  formData: FormData,
+  run: (customerId: string, note: string) => Promise<unknown>,
+  successMessage: string
+): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const parsed = loyaltyAdminActionSchema.parse({
+      customerId: stringValue(formData, "customerId"),
+      note: stringValue(formData, "note")
+    });
+    await run(parsed.customerId, parsed.note);
+    refreshAdmin(["/admin/fidelite", "/admin/fidelite/scan"]);
+    return { ok: true, message: successMessage };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur fidélité." };
+  }
+}
+
+export async function addLoyaltyStampAction(formData: FormData): Promise<ActionState> {
+  return loyaltyMutation(
+    formData,
+    async (customerId, note) => addStamp(customerId, await adminActionMeta(note)),
+    "Achat validé."
+  );
+}
+
+export async function removeLoyaltyStampAction(formData: FormData): Promise<ActionState> {
+  return loyaltyMutation(
+    formData,
+    async (customerId, note) => removeStamp(customerId, await adminActionMeta(note)),
+    "Tampon retiré."
+  );
+}
+
+export async function useLoyaltyRewardAction(formData: FormData): Promise<ActionState> {
+  const rewardTypeValue = stringValue(formData, "rewardType");
+  const rewardType =
+    rewardTypeValue === LoyaltyRewardType.DISCOUNT_50
+      ? LoyaltyRewardType.DISCOUNT_50
+      : LoyaltyRewardType.DISCOUNT_25;
+
+  return loyaltyMutation(
+    formData,
+    async (customerId, note) => useReward(customerId, rewardType, await adminActionMeta(note)),
+    rewardType === LoyaltyRewardType.DISCOUNT_50
+      ? "Récompense -50% utilisée et cycle réinitialisé."
+      : "Récompense -25% utilisée."
+  );
+}
+
+export async function toggleLoyaltyCardStatusAction(formData: FormData): Promise<ActionState> {
+  const mode = stringValue(formData, "mode");
+  return loyaltyMutation(
+    formData,
+    async (customerId, note) =>
+      mode === "block"
+        ? blockCard(customerId, await adminActionMeta(note))
+        : unblockCard(customerId, await adminActionMeta(note)),
+    mode === "block" ? "Carte bloquée." : "Carte débloquée."
+  );
 }
 
 export async function saveCategoryAction(formData: FormData): Promise<ActionState> {

@@ -93,6 +93,25 @@ export const adminUserSchema = z.object({
   isActive: z.boolean()
 });
 
+export const loyaltyCardSchema = z.object({
+  firstName: z.string().min(2, "Prénom obligatoire"),
+  lastName: z.string().optional(),
+  phone: z.string().min(6, "Téléphone obligatoire"),
+  email: z.string().email("Email invalide").or(z.literal("")).optional(),
+  consentAccepted: z.boolean().refine((value) => value, {
+    message: "Consentement obligatoire"
+  })
+});
+
+export const loyaltyAdminActionSchema = z.object({
+  customerId: z.string().min(1, "Client introuvable"),
+  note: z.string().min(3, "Note obligatoire")
+});
+
+export const loyaltyLookupSchema = z.object({
+  query: z.string().min(3, "Saisissez un token ou un téléphone")
+});
+
 export const settingsSchema = z.object({
   heroTitle: z.string().min(2),
   heroSubtitle: z.string().min(10),
@@ -117,3 +136,4 @@ export type TestimonialInput = z.infer<typeof testimonialSchema>;
 export type SeoPageInput = z.infer<typeof seoPageSchema>;
 export type BrandAssetInput = z.infer<typeof brandAssetSchema>;
 export type AdminUserInput = z.infer<typeof adminUserSchema>;
+export type LoyaltyCardInput = z.infer<typeof loyaltyCardSchema>;

@@ -5,6 +5,9 @@ import type {
   Dish,
   EventService,
   GalleryImage,
+  LoyaltyCustomer,
+  LoyaltyReward,
+  LoyaltyTransaction,
   Prisma,
   Reservation,
   SeoPage,
@@ -18,6 +21,9 @@ export type CategoryModel = Category;
 export type DishModel = Dish;
 export type EventServiceModel = EventService;
 export type GalleryImageModel = GalleryImage;
+export type LoyaltyCustomerModel = LoyaltyCustomer;
+export type LoyaltyRewardModel = LoyaltyReward;
+export type LoyaltyTransactionModel = LoyaltyTransaction;
 export type ReservationModel = Reservation;
 export type SeoPageModel = SeoPage;
 export type SiteSettingModel = SiteSetting;

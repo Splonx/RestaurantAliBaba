@@ -3,6 +3,7 @@
 import {
   ClipboardList,
   GalleryHorizontalEnd,
+  HeartHandshake,
   LayoutDashboard,
   LogOut,
   Menu as MenuIcon,
@@ -27,6 +28,7 @@ const links = [
   { href: "/admin/galerie", label: "Galerie", icon: GalleryHorizontalEnd },
   { href: "/admin/evenements", label: "Événements", icon: Wine },
   { href: "/admin/reservations", label: "Réservations", icon: ClipboardList },
+  { href: "/admin/fidelite", label: "Fidélité", icon: HeartHandshake },
   { href: "/admin/avis", label: "Avis clients", icon: Star },
   { href: "/admin/seo", label: "SEO", icon: Search },
   { href: "/admin/branding", label: "Branding", icon: Palette },
