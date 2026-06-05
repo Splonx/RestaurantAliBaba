@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import PwaRegistration from "@/components/site/PwaRegistration";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -16,6 +17,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  manifest: "/manifest.webmanifest",
   title: "Ali Baba El Jadida | Restaurant poissons & grillades",
   description:
     "Ali Baba El Jadida : restaurant de poissons, grillades et cuisine marocaine, idéal pour familles, groupes et événements.",
@@ -52,6 +54,14 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Ali Baba",
+    statusBarStyle: "black-translucent"
+  },
+  icons: {
+    apple: "/icons/icon-192.svg"
   }
 };
 
@@ -62,7 +72,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${manrope.variable} ${cormorant.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {children}
+        <PwaRegistration />
+      </body>
     </html>
   );
 }
