@@ -21,7 +21,13 @@ export async function generateMetadata({
   const { publicToken } = await params;
   const card = await getCardByPublicToken(publicToken);
   return {
-    title: card ? `Carte fidélité ${card.firstName} | Ali Baba` : "Carte fidélité | Ali Baba"
+    title: card ? `Carte fidélité ${card.firstName} | Ali Baba` : "Carte fidélité | Ali Baba",
+    manifest: `/fidelite/${publicToken}/manifest.webmanifest`,
+    appleWebApp: {
+      capable: true,
+      title: card ? `Ali Baba - ${card.firstName}` : "Ali Baba",
+      statusBarStyle: "black-translucent"
+    }
   };
 }
 
