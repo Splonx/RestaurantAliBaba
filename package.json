@@ -5,7 +5,7 @@
   "scripts": {
     "prebuild": "node scripts/validate-env.mjs",
     "dev": "next dev",
-    "build": "prisma migrate deploy && prisma generate && next build",
+    "build": "node scripts/prisma-migrate-deploy-retry.mjs && prisma generate && next build",
     "lint": "tsc --noEmit --incremental false",
     "postinstall": "prisma generate",
     "start": "next start",
