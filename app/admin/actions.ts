@@ -164,13 +164,17 @@ export async function scanLookupLoyaltyCardAction(formData: FormData): Promise<A
   let redirectTo = "";
   try {
     const parsed = loyaltyLookupSchema.parse({ query: stringValue(formData, "query") });
+    const targetPath =
+      stringValue(formData, "targetPath") === "/fidelite/scan"
+        ? "/fidelite/scan"
+        : "/admin/fidelite/scan";
     const card = await findCard({
       publicToken: parsed.query,
       phone: parsed.query
     });
 
     if (!card) return { ok: false, message: "Carte introuvable." };
-    redirectTo = `/admin/fidelite/scan?client=${card.publicToken}`;
+    redirectTo = `${targetPath}?client=${card.publicToken}`;
   } catch (error) {
     return { ok: false, message: error instanceof Error ? error.message : "Erreur recherche." };
   }

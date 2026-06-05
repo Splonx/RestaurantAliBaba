@@ -21,7 +21,7 @@ function extractToken(value: string) {
   }
 }
 
-export default function LoyaltyScanner() {
+export default function LoyaltyScanner({ targetPath = "/admin/fidelite/scan" }: { targetPath?: string }) {
   const [state, formAction] = useActionState(
     async (_previousState: typeof initialState, formData: FormData) =>
       scanLookupLoyaltyCardAction(formData),
@@ -128,6 +128,7 @@ export default function LoyaltyScanner() {
       ) : null}
 
       <form action={formAction} className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <input type="hidden" name="targetPath" value={targetPath} />
         <input
           name="query"
           value={query}
