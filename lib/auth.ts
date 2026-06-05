@@ -29,12 +29,20 @@ function safeEqual(left: string, right: string) {
   return crypto.timingSafeEqual(leftHash, rightHash);
 }
 
+function normalizeEnvCredential(value: string | undefined) {
+  const trimmed = value?.trim();
+  if (!trimmed) return "";
+  return trimmed.replace(/^["']|["']$/g, "");
+}
+
 export function verifyAdminCredentials(username: string, password: string) {
-  const expectedUsername = process.env.ADMIN_EMAIL ?? process.env.ADMIN_USERNAME;
-  const expectedPassword = process.env.ADMIN_PASSWORD;
+  const expectedUsername = normalizeEnvCredential(
+    process.env.ADMIN_EMAIL ?? process.env.ADMIN_USERNAME
+  );
+  const expectedPassword = normalizeEnvCredential(process.env.ADMIN_PASSWORD);
   if (!expectedUsername || !expectedPassword) return false;
 
-  return safeEqual(username, expectedUsername) && safeEqual(password, expectedPassword);
+  return safeEqual(username.trim(), expectedUsername) && safeEqual(password, expectedPassword);
 }
 
 export async function createAdminSession(username: string) {
