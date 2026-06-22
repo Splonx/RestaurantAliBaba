@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Download, FileText, Save } from "lucide-react";
+import { Copy, FileText, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 import { saveMenuDocumentAction } from "@/app/admin/actions";
@@ -10,16 +10,12 @@ type MenuPdfManagerProps = {
   title: string;
   fileUrl: string;
   publicFileUrl: string;
-  menuUrl: string;
-  qrCode: string;
 };
 
 export default function MenuPdfManager({
   title,
   fileUrl,
-  publicFileUrl,
-  menuUrl,
-  qrCode
+  publicFileUrl
 }: MenuPdfManagerProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -102,50 +98,28 @@ export default function MenuPdfManager({
         </form>
 
         <section className="rounded-lg bg-cream p-6 shadow-admin">
-          <div className="grid gap-5 lg:grid-cols-[1fr_220px]">
-            <div>
-              <p className="eyebrow">Lien public</p>
-              <h3 className="mt-2 font-display text-3xl font-semibold text-coffee">
-                Menu PDF & QR code
-              </h3>
-              <div className="mt-5 grid gap-3">
-                <a
-                  href={publicFileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="focus-ring rounded-lg bg-terracotta px-4 py-3 text-center text-sm font-bold text-cream"
-                >
-                  Voir le PDF public
-                </a>
-                <button
-                  type="button"
-                  onClick={() => copy(publicFileUrl, "pdf")}
-                  className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg border border-coffee/10 bg-white px-4 py-3 text-sm font-bold text-coffee"
-                >
-                  <Copy size={17} aria-hidden />
-                  {copied === "pdf" ? "Lien copié" : "Copier le lien PDF"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => copy(menuUrl, "menu")}
-                  className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg border border-coffee/10 bg-white px-4 py-3 text-sm font-bold text-coffee"
-                >
-                  <Copy size={17} aria-hidden />
-                  {copied === "menu" ? "Lien copié" : "Copier le lien menu"}
-                </button>
-              </div>
-            </div>
-
-            <div className="rounded-lg bg-white p-4 text-center">
-              <img src={qrCode} alt="QR code vers le menu" className="mx-auto h-44 w-44" />
+          <div>
+            <p className="eyebrow">Lien public</p>
+            <h3 className="mt-2 font-display text-3xl font-semibold text-coffee">
+              Menu PDF officiel
+            </h3>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <a
-                href={qrCode}
-                download="qr-menu-restaurant-ali-baba.png"
-                className="focus-ring mt-4 inline-flex items-center justify-center gap-2 rounded-lg bg-olive px-4 py-3 text-sm font-bold text-cream"
+                href={publicFileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="focus-ring rounded-lg bg-terracotta px-4 py-3 text-center text-sm font-bold text-cream"
               >
-                <Download size={17} aria-hidden />
-                Télécharger QR
+                Voir le PDF public
               </a>
+              <button
+                type="button"
+                onClick={() => copy(publicFileUrl, "pdf")}
+                className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg border border-coffee/10 bg-white px-4 py-3 text-sm font-bold text-coffee"
+              >
+                <Copy size={17} aria-hidden />
+                {copied === "pdf" ? "Lien copié" : "Copier le lien PDF"}
+              </button>
             </div>
           </div>
         </section>

@@ -30,12 +30,10 @@ function toAnchor(label: string) {
 
 export default function MenuList({
   categories,
-  pdfUrl,
-  qrCode
+  pdfUrl
 }: {
   categories: MenuCategory[];
   pdfUrl: string;
-  qrCode: string;
 }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState("all");
   const visibleCategories = useMemo(
@@ -57,11 +55,11 @@ export default function MenuList({
           align="center"
         />
 
-        <div className="mt-8 grid gap-3 rounded-lg border border-coffee/10 bg-cream p-4 shadow-soft sm:grid-cols-[1fr_auto_auto] sm:items-center">
+        <div className="mt-8 grid gap-3 rounded-lg border border-coffee/10 bg-cream p-4 shadow-soft sm:grid-cols-[1fr_auto] sm:items-center">
           <div>
             <p className="text-sm font-semibold text-coffee">Menu PDF officiel</p>
             <p className="text-xs leading-5 text-coffee/55">
-              Consultez la carte originale ou scannez le QR code pour ouvrir cette page.
+              Consultez la carte originale du restaurant depuis le PDF public.
             </p>
           </div>
           <a
@@ -72,9 +70,6 @@ export default function MenuList({
           >
             Consulter le PDF
           </a>
-          <div className="hidden rounded-lg bg-white p-2 sm:block">
-            <img src={qrCode} alt="QR code du menu" className="h-20 w-20" />
-          </div>
         </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-2">

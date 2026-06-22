@@ -285,7 +285,7 @@ export async function saveMenuDocumentAction(formData: FormData): Promise<Action
       });
     });
 
-    refreshAdmin(["/admin/menu-pdf", "/admin/menu", "/menu", "/qr-menu"]);
+    refreshAdmin(["/admin/menu-pdf", "/admin/menu", "/menu"]);
     return { ok: true, message: "PDF du menu enregistré." };
   } catch (error) {
     return { ok: false, message: error instanceof Error ? error.message : "Erreur PDF menu." };
