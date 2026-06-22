@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Salade Restaurant Ali Baba">
+  <rect width="640" height="480" fill="#F7F1E8"/>
+  <circle cx="138" cy="96" r="150" fill="#D6B98D" opacity=".38"/>
+  <circle cx="500" cy="390" r="190" fill="#B95C3C" opacity=".14"/>
+  <ellipse cx="320" cy="298" rx="210" ry="82" fill="#2B1B15"/>
+  <ellipse cx="320" cy="278" rx="184" ry="64" fill="#F7F1E8"/>
+  <circle cx="245" cy="250" r="42" fill="#4F5B3A"/>
+  <circle cx="319" cy="236" r="48" fill="#B8793D"/>
+  <circle cx="394" cy="255" r="40" fill="#4F5B3A"/>
+  <path d="M202 285c77 42 161 43 238 0" fill="none" stroke="#D6B98D" stroke-width="14" stroke-linecap="round"/>
+</svg>

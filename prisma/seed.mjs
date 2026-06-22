@@ -251,7 +251,7 @@ const testimonials = [
 
 const seoPages = [
   ["/", "Restaurant Ali Baba El Jadida | Poissons, grillades & événements", "Restaurant Ali Baba El Jadida : cuisine marocaine, méditerranéenne, poissons, grillades et réservations de groupe."],
-  ["/menu", "Menu | Restaurant Ali Baba El Jadida", "Découvrez la carte administrable du Restaurant Ali Baba El Jadida : entrées, salades, poissons, grillades, cuisine marocaine, desserts et boissons."],
+  ["/menu", "Menu Restaurant Ali Baba | Carte & Prix à El Jadida", "Consultez le menu du Restaurant Ali Baba à El Jadida : plats, spécialités, prix et carte complète en ligne."],
   ["/galerie", "Galerie | Restaurant Ali Baba El Jadida", "Photos de l’ambiance, des plats, de la salle et des événements du Restaurant Ali Baba El Jadida."],
   ["/evenements", "Événements | Restaurant Ali Baba El Jadida", "Mariages, anniversaires, repas de groupe, événements privés et entreprise au Restaurant Ali Baba El Jadida."],
   ["/a-propos", "À propos | Restaurant Ali Baba El Jadida", "Découvrez l’esprit chaleureux, familial, marocain contemporain et méditerranéen du Restaurant Ali Baba El Jadida."],

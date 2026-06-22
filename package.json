@@ -13,6 +13,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
+    "menu:import": "node scripts/import-menu-pdf.mjs",
     "prisma": "prisma"
   },
   "dependencies": {

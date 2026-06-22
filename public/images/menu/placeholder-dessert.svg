@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Dessert Restaurant Ali Baba">
+  <rect width="640" height="480" fill="#F7F1E8"/>
+  <circle cx="122" cy="92" r="150" fill="#D6B98D" opacity=".38"/>
+  <circle cx="508" cy="390" r="180" fill="#B95C3C" opacity=".16"/>
+  <path d="M198 212h244l-32 160c-6 31-33 53-64 53h-52c-31 0-58-22-64-53Z" fill="#B8793D"/>
+  <path d="M220 212c20-42 55-62 100-62s80 20 100 62Z" fill="#F7F1E8"/>
+  <circle cx="320" cy="154" r="18" fill="#B95C3C"/>
+  <path d="M190 426h260" stroke="#2B1B15" stroke-width="12" stroke-linecap="round" opacity=".75"/>
+</svg>

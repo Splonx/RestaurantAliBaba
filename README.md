@@ -85,3 +85,19 @@ Google Wallet nécessite :
 - Google Wallet issuer account
 - Google Cloud service account
 - Google Wallet API
+
+## Menu PDF & QR menu
+
+- Page menu publique : `/menu`.
+- PDF public du menu : `/documents/menu-restaurant-ali-baba.pdf`.
+- Page QR imprimable : `/qr-menu`.
+- Back-office PDF/QR : `/admin/menu-pdf`.
+- Source structurée extraite du PDF : `data/ali-baba-menu.json`.
+
+Pour importer ou mettre à jour les catégories, plats, descriptions, prix et le document actif dans PostgreSQL :
+
+```bash
+npm run menu:import
+```
+
+La commande est idempotente : elle met à jour les lignes existantes par nom + catégorie et conserve les prix exacts du PDF source.

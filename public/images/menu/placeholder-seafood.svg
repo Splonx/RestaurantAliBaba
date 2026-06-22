@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Plat de poisson Restaurant Ali Baba">
+  <rect width="640" height="480" fill="#F7F1E8"/>
+  <circle cx="500" cy="80" r="160" fill="#D6B98D" opacity=".45"/>
+  <circle cx="128" cy="398" r="180" fill="#4F5B3A" opacity=".18"/>
+  <path d="M116 262c78-86 206-118 342-46 30-24 60-38 90-42-12 34-34 60-65 78 28 21 48 48 62 80-42 0-78-13-108-40-126 49-246 31-321-30Z" fill="#B95C3C"/>
+  <path d="M165 258c58-46 146-62 238-24-79 31-163 42-238 24Z" fill="#F7F1E8" opacity=".55"/>
+  <circle cx="434" cy="230" r="10" fill="#2B1B15"/>
+  <path d="M123 335h397" stroke="#B8793D" stroke-width="12" stroke-linecap="round"/>
+</svg>

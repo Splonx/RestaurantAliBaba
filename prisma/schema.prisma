@@ -34,6 +34,18 @@ model Dish {
   updatedAt   DateTime @updatedAt
 }
 
+model MenuDocument {
+  id         String   @id @default(cuid())
+  title      String
+  fileUrl    String
+  isActive   Boolean  @default(true)
+  uploadedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([uploadedAt])
+}
+
 model GalleryImage {
   id         String   @id @default(cuid())
   title      String

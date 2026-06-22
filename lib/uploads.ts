@@ -4,6 +4,7 @@ import crypto from "crypto";
 import path from "path";
 
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+const MAX_DOCUMENT_UPLOAD_SIZE = 200 * 1024 * 1024;
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
 export async function saveUploadedImage(file: File | null, folder: string) {
@@ -23,6 +24,29 @@ export async function saveUploadedImage(file: File | null, folder: string) {
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
   const relativePath = `/uploads/${safeFolder}/${fileName}`;
   const targetDir = path.join(process.cwd(), "public", "uploads", safeFolder);
+  const targetPath = path.join(targetDir, fileName);
+
+  await mkdir(targetDir, { recursive: true });
+  await writeFile(targetPath, Buffer.from(await file.arrayBuffer()));
+  return relativePath;
+}
+
+export async function saveUploadedPdf(file: File | null, folder: string) {
+  if (!file || file.size === 0) return null;
+  if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+    throw new Error("Format document non supporté. Utilisez un fichier PDF.");
+  }
+  if (file.size > MAX_DOCUMENT_UPLOAD_SIZE) {
+    throw new Error("PDF trop lourd. Taille maximale : 200 Mo.");
+  }
+
+  const safeFolder = folder.replace(/[^a-z0-9-]/gi, "").toLowerCase();
+  const fileName =
+    safeFolder === "documents"
+      ? "menu-restaurant-ali-baba.pdf"
+      : `${Date.now()}-${randomUUID()}.pdf`;
+  const relativePath = `/${safeFolder}/${fileName}`;
+  const targetDir = path.join(process.cwd(), "public", safeFolder);
   const targetPath = path.join(targetDir, fileName);
 
   await mkdir(targetDir, { recursive: true });

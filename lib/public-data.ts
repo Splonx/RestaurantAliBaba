@@ -4,9 +4,11 @@ import type {
   DishModel,
   EventServiceModel,
   GalleryImageModel,
+  MenuDocumentModel,
   SeoPageModel,
   TestimonialModel
 } from "@/lib/prisma-types";
+import menuSource from "@/data/ali-baba-menu.json";
 import { prisma } from "@/lib/prisma";
 
 type PublicCategoryWithDishes = CategoryModel & {
@@ -54,6 +56,40 @@ function dish(input: {
     updatedAt: seedDate
   };
 }
+
+const officialMenuFallbackCategories: PublicCategoryWithDishes[] = menuSource.categories.map(
+  (item) =>
+    category(
+      `fallback-category-${item.slug}`,
+      item.name,
+      item.slug,
+      item.sortOrder,
+      item.dishes.map((dishItem) => ({
+        id: `fallback-dish-${item.slug}-${dishItem.sortOrder}`,
+        name: dishItem.name,
+        description: dishItem.description,
+        price: dishItem.price,
+        imageUrl: dishItem.imageUrl,
+        categoryId: `fallback-category-${item.slug}`,
+        badge: "badge" in dishItem ? dishItem.badge ?? null : null,
+        allergens: "allergens" in dishItem ? dishItem.allergens ?? null : null,
+        isFeatured: "badge" in dishItem && Boolean(dishItem.badge),
+        isActive: true,
+        sortOrder: dishItem.sortOrder,
+        createdAt: seedDate,
+        updatedAt: seedDate
+      }))
+    )
+);
+
+const fallbackMenuDocument: MenuDocumentModel = {
+  id: "fallback-menu-document",
+  title: menuSource.document.title,
+  fileUrl: menuSource.document.fileUrl,
+  isActive: true,
+  uploadedAt: seedDate,
+  updatedAt: seedDate
+};
 
 const fallbackCategories: PublicCategoryWithDishes[] = [
   category("fallback-category-entrees", "Entrées", "entrees", 1, [
@@ -369,10 +405,23 @@ export async function getPublicMenuData() {
       },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
     }),
-    fallbackCategories
+    officialMenuFallbackCategories
   );
 
-  return categories.length > 0 ? categories : fallbackCategories;
+  return categories.length > 0 ? categories : officialMenuFallbackCategories;
+}
+
+export async function getPublicMenuDocument() {
+  const document = await safeQuery(
+    "menu:document",
+    prisma.menuDocument.findFirst({
+      where: { isActive: true },
+      orderBy: { uploadedAt: "desc" }
+    }),
+    fallbackMenuDocument
+  );
+
+  return document ?? fallbackMenuDocument;
 }
 
 export async function getPublicGalleryData() {

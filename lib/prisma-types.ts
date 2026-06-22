@@ -8,6 +8,7 @@ import type {
   LoyaltyCustomer,
   LoyaltyReward,
   LoyaltyTransaction,
+  MenuDocument,
   Prisma,
   Reservation,
   SeoPage,
@@ -24,6 +25,7 @@ export type GalleryImageModel = GalleryImage;
 export type LoyaltyCustomerModel = LoyaltyCustomer;
 export type LoyaltyRewardModel = LoyaltyReward;
 export type LoyaltyTransactionModel = LoyaltyTransaction;
+export type MenuDocumentModel = MenuDocument;
 export type ReservationModel = Reservation;
 export type SeoPageModel = SeoPage;
 export type SiteSettingModel = SiteSetting;

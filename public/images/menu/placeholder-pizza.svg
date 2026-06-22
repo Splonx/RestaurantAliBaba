@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Pizza Restaurant Ali Baba">
+  <rect width="640" height="480" fill="#F7F1E8"/>
+  <circle cx="505" cy="94" r="160" fill="#4F5B3A" opacity=".16"/>
+  <circle cx="310" cy="266" r="156" fill="#D6B98D"/>
+  <circle cx="310" cy="266" r="125" fill="#B8793D"/>
+  <path d="M310 266 420 154a156 156 0 0 1 44 112Z" fill="#F7F1E8" opacity=".85"/>
+  <circle cx="250" cy="230" r="16" fill="#B95C3C"/>
+  <circle cx="350" cy="322" r="17" fill="#B95C3C"/>
+  <circle cx="276" cy="330" r="13" fill="#4F5B3A"/>
+  <circle cx="374" cy="234" r="13" fill="#4F5B3A"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Boisson Restaurant Ali Baba">
+  <rect width="640" height="480" fill="#F7F1E8"/>
+  <circle cx="502" cy="98" r="155" fill="#D6B98D" opacity=".42"/>
+  <circle cx="126" cy="392" r="160" fill="#4F5B3A" opacity=".16"/>
+  <path d="M258 132h126l-18 258c-2 26-23 46-49 46h-18c-26 0-47-20-49-46Z" fill="#B95C3C"/>
+  <path d="M280 178h82l-12 158h-58Z" fill="#F7F1E8" opacity=".72"/>
+  <path d="M248 118h148" stroke="#2B1B15" stroke-width="12" stroke-linecap="round"/>
+</svg>

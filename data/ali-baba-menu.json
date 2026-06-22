@@ -1,0 +1,454 @@
+{
+  "document": {
+    "title": "Menu Restaurant Ali Baba",
+    "fileUrl": "/documents/menu-restaurant-ali-baba.pdf"
+  },
+  "categories": [
+    {
+      "name": "Entrées",
+      "slug": "entrees",
+      "sortOrder": 1,
+      "dishes": [
+        {
+          "name": "Huitres Oualidia crues ou gratinèes",
+          "description": "Huitres d'Oualidia servies crues ou gratinées, selon votre préférence.",
+          "price": "98 / 110dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "badge": "recommandé",
+          "allergens": "Fruits de mer",
+          "sortOrder": 1
+        },
+        {
+          "name": "Marinade d'anchois",
+          "description": "Anchois marinés, servis frais pour ouvrir le repas avec une note iodée.",
+          "price": "78dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 2
+        },
+        {
+          "name": "Salade Ali Baba",
+          "description": "Salade signature de la maison, généreuse et fraîche.",
+          "price": "130dhs",
+          "imageUrl": "/images/menu/placeholder-salad.svg",
+          "badge": "populaire",
+          "sortOrder": 3
+        },
+        {
+          "name": "Avocat crevette",
+          "description": "Avocat et crevettes dans une assiette fraîche et élégante.",
+          "price": "88dhs",
+          "imageUrl": "/images/menu/placeholder-salad.svg",
+          "allergens": "Crustacés",
+          "sortOrder": 4
+        },
+        {
+          "name": "Assiette de saumon fumèe",
+          "description": "Saumon fumé présenté en assiette froide, idéal en entrée.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 5
+        },
+        {
+          "name": "Endives fromages",
+          "description": "Endives croquantes accompagnées de fromage.",
+          "price": "88dhs",
+          "imageUrl": "/images/menu/placeholder-salad.svg",
+          "allergens": "Lait",
+          "sortOrder": 6
+        },
+        {
+          "name": "Salade cesar",
+          "description": "Salade César classique, fraîche et gourmande.",
+          "price": "78dhs",
+          "imageUrl": "/images/menu/placeholder-salad.svg",
+          "sortOrder": 7
+        },
+        {
+          "name": "Salade niçoise",
+          "description": "Salade niçoise servie dans un esprit méditerranéen.",
+          "price": "78dhs",
+          "imageUrl": "/images/menu/placeholder-salad.svg",
+          "sortOrder": 8
+        },
+        {
+          "name": "Terrine de canard",
+          "description": "Terrine de canard servie en entrée froide.",
+          "price": "88dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "sortOrder": 9
+        },
+        {
+          "name": "Supions à l'encre",
+          "description": "Supions préparés à l'encre, dans une assiette de caractère.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Mollusques",
+          "sortOrder": 10
+        },
+        {
+          "name": "Tartare de thon rouge",
+          "description": "Thon rouge préparé en tartare, frais et délicat.",
+          "price": "88dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 11
+        }
+      ]
+    },
+    {
+      "name": "Poissons",
+      "slug": "poissons",
+      "sortOrder": 2,
+      "dishes": [
+        {
+          "name": "Bar grillé à l'huile d'olive",
+          "description": "Bar grillé simplement, relevé par l'huile d'olive.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "badge": "recommandé",
+          "allergens": "Poisson",
+          "sortOrder": 1
+        },
+        {
+          "name": "Dorade grillé",
+          "description": "Dorade grillée, servie dans l'esprit frais de la maison.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 2
+        },
+        {
+          "name": "Espadon grillé",
+          "description": "Espadon grillé, généreux et parfumé.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 3
+        },
+        {
+          "name": "Thon rouge grillé",
+          "description": "Thon rouge grillé, cuisson simple et savoureuse.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 4
+        },
+        {
+          "name": "Pavé de saumon frais grillé",
+          "description": "Pavé de saumon frais grillé, tendre et parfumé.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Poisson",
+          "sortOrder": 5
+        },
+        {
+          "name": "Crevettes à la plancha",
+          "description": "Crevettes saisies à la plancha, servies chaudes.",
+          "price": "130dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Crustacés",
+          "sortOrder": 6
+        },
+        {
+          "name": "Beignets de calamar",
+          "description": "Calamar en beignets, croustillant et généreux.",
+          "price": "220dhs",
+          "imageUrl": "/images/menu/placeholder-seafood.svg",
+          "allergens": "Mollusques, gluten",
+          "sortOrder": 7
+        }
+      ]
+    },
+    {
+      "name": "Viandes",
+      "slug": "viandes",
+      "sortOrder": 3,
+      "dishes": [
+        {
+          "name": "Filets de boeuf grillé",
+          "description": "Filets de boeuf grillés, servis dans une assiette généreuse.",
+          "price": "220dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "badge": "populaire",
+          "sortOrder": 1
+        },
+        {
+          "name": "Entrecote sauce champignons roquefort",
+          "description": "Entrecôte accompagnée d'une sauce champignons roquefort.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "allergens": "Lait",
+          "sortOrder": 2
+        },
+        {
+          "name": "Osso bucco",
+          "description": "Osso bucco mijoté, plat chaud et réconfortant.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "sortOrder": 3
+        },
+        {
+          "name": "Langue de boeuf sauce tomate",
+          "description": "Langue de boeuf servie avec une sauce tomate.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "sortOrder": 4
+        },
+        {
+          "name": "Rognons à la moutarde",
+          "description": "Rognons servis avec une sauce à la moutarde.",
+          "price": "180dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "allergens": "Moutarde",
+          "sortOrder": 5
+        },
+        {
+          "name": "Hamburger + Frites",
+          "description": "Hamburger accompagné de frites.",
+          "price": "120dhs",
+          "imageUrl": "/images/menu/placeholder-meat.svg",
+          "sortOrder": 6
+        }
+      ]
+    },
+    {
+      "name": "Pizza",
+      "slug": "pizza",
+      "sortOrder": 4,
+      "dishes": [
+        {
+          "name": "Merguez",
+          "description": "Pizza merguez, chaude et généreuse.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 1
+        },
+        {
+          "name": "Margharita",
+          "description": "Pizza Margharita, simple et fondante.",
+          "price": "65dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 2
+        },
+        {
+          "name": "V.Hachée",
+          "description": "Pizza à la viande hachée, généreuse et savoureuse.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 3
+        },
+        {
+          "name": "Poulet",
+          "description": "Pizza au poulet, servie bien chaude.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 4
+        },
+        {
+          "name": "Végétarienne",
+          "description": "Pizza végétarienne, colorée et légère.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 5
+        },
+        {
+          "name": "Thon",
+          "description": "Pizza au thon, dans un esprit méditerranéen.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait, poisson",
+          "sortOrder": 6
+        },
+        {
+          "name": "Jambon",
+          "description": "Pizza jambon, fondante et généreuse.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 7
+        },
+        {
+          "name": "4 Fromages",
+          "description": "Pizza quatre fromages, riche et fondante.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 8
+        },
+        {
+          "name": "Anchois",
+          "description": "Pizza aux anchois, fine et salée.",
+          "price": "85dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait, poisson",
+          "sortOrder": 9
+        },
+        {
+          "name": "Saumon",
+          "description": "Pizza au saumon, douce et parfumée.",
+          "price": "80dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait, poisson",
+          "sortOrder": 10
+        },
+        {
+          "name": "Fruit de mer",
+          "description": "Pizza aux fruits de mer, généreuse et iodée.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait, fruits de mer",
+          "sortOrder": 11
+        },
+        {
+          "name": "4 Saisons",
+          "description": "Pizza quatre saisons, complète et équilibrée.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-pizza.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 12
+        }
+      ]
+    },
+    {
+      "name": "Pastas",
+      "slug": "pastas",
+      "sortOrder": 5,
+      "dishes": [
+        {
+          "name": "Pâtes fruit de mer",
+          "description": "Pâtes aux fruits de mer, généreuses et parfumées.",
+          "price": "120dhs",
+          "imageUrl": "/images/menu/placeholder-pasta.svg",
+          "allergens": "Gluten, fruits de mer",
+          "sortOrder": 1
+        },
+        {
+          "name": "Pâtes bolognaise",
+          "description": "Pâtes bolognaise, sauce chaude et généreuse.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-pasta.svg",
+          "allergens": "Gluten",
+          "sortOrder": 2
+        },
+        {
+          "name": "Pâtes carbonara",
+          "description": "Pâtes carbonara, crémeuses et gourmandes.",
+          "price": "100dhs",
+          "imageUrl": "/images/menu/placeholder-pasta.svg",
+          "allergens": "Gluten, lait",
+          "sortOrder": 3
+        },
+        {
+          "name": "Pâtes poulet",
+          "description": "Pâtes au poulet, simples et généreuses.",
+          "price": "90dhs",
+          "imageUrl": "/images/menu/placeholder-pasta.svg",
+          "allergens": "Gluten",
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "name": "Boissons & Desserts",
+      "slug": "boissons-desserts",
+      "sortOrder": 6,
+      "dishes": [
+        {
+          "name": "Eau grande",
+          "description": "Grande bouteille d'eau.",
+          "price": "30dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 1
+        },
+        {
+          "name": "Eau petite",
+          "description": "Petite bouteille d'eau.",
+          "price": "15dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 2
+        },
+        {
+          "name": "Soda",
+          "description": "Boisson soda servie fraîche.",
+          "price": "25dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 3
+        },
+        {
+          "name": "Jus",
+          "description": "Jus servi frais.",
+          "price": "30dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 4
+        },
+        {
+          "name": "Red Bull",
+          "description": "Boisson énergisante Red Bull.",
+          "price": "50dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 5
+        },
+        {
+          "name": "Thé",
+          "description": "Thé servi chaud.",
+          "price": "20dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 6
+        },
+        {
+          "name": "Café",
+          "description": "Café servi chaud.",
+          "price": "25dhs",
+          "imageUrl": "/images/menu/placeholder-drinks.svg",
+          "sortOrder": 7
+        },
+        {
+          "name": "Tiramissu",
+          "description": "Dessert tiramissu, doux et gourmand.",
+          "price": "40dhs",
+          "imageUrl": "/images/menu/placeholder-dessert.svg",
+          "allergens": "Lait, gluten",
+          "sortOrder": 8
+        },
+        {
+          "name": "Crème caramel",
+          "description": "Crème caramel, dessert classique et fondant.",
+          "price": "40dhs",
+          "imageUrl": "/images/menu/placeholder-dessert.svg",
+          "allergens": "Lait, oeufs",
+          "sortOrder": 9
+        },
+        {
+          "name": "Mousse au chocolat",
+          "description": "Mousse au chocolat, légère et gourmande.",
+          "price": "40dhs",
+          "imageUrl": "/images/menu/placeholder-dessert.svg",
+          "allergens": "Lait",
+          "sortOrder": 10
+        },
+        {
+          "name": "Salade de fruit",
+          "description": "Salade de fruit fraîche.",
+          "price": "40dhs",
+          "imageUrl": "/images/menu/placeholder-dessert.svg",
+          "sortOrder": 11
+        },
+        {
+          "name": "Assiette fromage",
+          "description": "Assiette de fromage à partager ou à déguster en fin de repas.",
+          "price": "50dhs",
+          "imageUrl": "/images/menu/placeholder-dessert.svg",
+          "allergens": "Lait",
+          "sortOrder": 12
+        }
+      ]
+    }
+  ]
+}

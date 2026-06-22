@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useMemo, useState } from "react";
 import SectionIntro from "@/components/site/SectionIntro";
 import { displayPrice } from "@/lib/format";
 
@@ -25,31 +28,85 @@ function toAnchor(label: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-export default function MenuList({ categories }: { categories: MenuCategory[] }) {
+export default function MenuList({
+  categories,
+  pdfUrl,
+  qrCode
+}: {
+  categories: MenuCategory[];
+  pdfUrl: string;
+  qrCode: string;
+}) {
+  const [selectedCategoryId, setSelectedCategoryId] = useState("all");
+  const visibleCategories = useMemo(
+    () =>
+      selectedCategoryId === "all"
+        ? categories
+        : categories.filter((category) => category.id === selectedCategoryId),
+    [categories, selectedCategoryId]
+  );
+  const totalDishes = categories.reduce((total, category) => total + category.dishes.length, 0);
+
   return (
     <section className="bg-ivory py-20 sm:py-24">
       <div className="section-shell">
         <SectionIntro
           eyebrow="Carte"
           title="Menu Ali Baba El Jadida"
-          text="La carte est mise à jour depuis l’administration. Quand le prix n’est pas publié, le site affiche “Disponible au restaurant”."
+          text={`${totalDishes} spécialités issues du menu officiel : prix, catégories et ordre de service respectent le PDF du restaurant.`}
           align="center"
         />
 
+        <div className="mt-8 grid gap-3 rounded-lg border border-coffee/10 bg-cream p-4 shadow-soft sm:grid-cols-[1fr_auto_auto] sm:items-center">
+          <div>
+            <p className="text-sm font-semibold text-coffee">Menu PDF officiel</p>
+            <p className="text-xs leading-5 text-coffee/55">
+              Consultez la carte originale ou scannez le QR code pour ouvrir cette page.
+            </p>
+          </div>
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="focus-ring inline-flex justify-center rounded-lg bg-coffee px-4 py-3 text-sm font-bold text-cream"
+          >
+            Consulter le PDF
+          </a>
+          <div className="hidden rounded-lg bg-white p-2 sm:block">
+            <img src={qrCode} alt="QR code du menu" className="h-20 w-20" />
+          </div>
+        </div>
+
         <div className="mt-10 flex flex-wrap justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSelectedCategoryId("all")}
+            className={`focus-ring rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] transition ${
+              selectedCategoryId === "all"
+                ? "border-coffee bg-coffee text-cream"
+                : "border-coffee/15 bg-white text-coffee hover:border-copper hover:text-copper"
+            }`}
+          >
+            Tout
+          </button>
           {categories.map((category) => (
-            <a
+            <button
+              type="button"
               key={category.id}
-              href={`#${toAnchor(category.name)}`}
-              className="focus-ring rounded-full border border-coffee/15 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-coffee transition hover:border-copper hover:text-copper"
+              onClick={() => setSelectedCategoryId(category.id)}
+              className={`focus-ring rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] transition ${
+                selectedCategoryId === category.id
+                  ? "border-coffee bg-coffee text-cream"
+                  : "border-coffee/15 bg-white text-coffee hover:border-copper hover:text-copper"
+              }`}
             >
               {category.name}
-            </a>
+            </button>
           ))}
         </div>
 
         <div className="mt-12 space-y-10">
-          {categories.map((category) => (
+          {visibleCategories.map((category) => (
             <section
               key={category.id}
               id={toAnchor(category.name)}
@@ -72,15 +129,13 @@ export default function MenuList({ categories }: { categories: MenuCategory[] })
                       className="flex gap-4 rounded-lg border border-coffee/10 bg-white/70 p-3"
                     >
                       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-sand/30">
-                        {dish.imageUrl ? (
-                          <Image
-                            src={dish.imageUrl}
-                            alt={dish.name}
-                            fill
-                            sizes="96px"
-                            className="object-cover"
-                          />
-                        ) : null}
+                        <Image
+                          src={dish.imageUrl || "/images/menu/placeholder-seafood.svg"}
+                          alt={dish.name}
+                          fill
+                          sizes="96px"
+                          className="object-cover"
+                        />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">

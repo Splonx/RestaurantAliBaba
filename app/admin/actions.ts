@@ -16,7 +16,7 @@ import {
   useReward
 } from "@/lib/loyalty";
 import { prisma } from "@/lib/prisma";
-import { saveUploadedImage } from "@/lib/uploads";
+import { saveUploadedImage, saveUploadedPdf } from "@/lib/uploads";
 import {
   adminUserSchema,
   brandAssetSchema,
@@ -243,6 +243,53 @@ export async function toggleLoyaltyCardStatusAction(formData: FormData): Promise
         : unblockCard(customerId, await adminActionMeta(note)),
     mode === "block" ? "Carte bloquée." : "Carte débloquée."
   );
+}
+
+export async function saveMenuDocumentAction(formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  try {
+    const title = stringValue(formData, "title") || "Menu Restaurant Ali Baba";
+    const uploadedPdf = await saveUploadedPdf(formData.get("menuPdf") as File | null, "documents");
+    const fileUrl = uploadedPdf ?? optionalString(stringValue(formData, "fileUrl"));
+
+    if (!fileUrl) {
+      return { ok: false, message: "Ajoutez un PDF ou renseignez une URL publique." };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.menuDocument.updateMany({
+        where: { isActive: true },
+        data: { isActive: false }
+      });
+
+      const existing = await tx.menuDocument.findFirst({ where: { fileUrl } });
+      if (existing) {
+        await tx.menuDocument.update({
+          where: { id: existing.id },
+          data: {
+            title,
+            fileUrl,
+            isActive: true,
+            uploadedAt: new Date()
+          }
+        });
+        return;
+      }
+
+      await tx.menuDocument.create({
+        data: {
+          title,
+          fileUrl,
+          isActive: true
+        }
+      });
+    });
+
+    refreshAdmin(["/admin/menu-pdf", "/admin/menu", "/menu", "/qr-menu"]);
+    return { ok: true, message: "PDF du menu enregistré." };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "Erreur PDF menu." };
+  }
 }
 
 export async function saveCategoryAction(formData: FormData): Promise<ActionState> {

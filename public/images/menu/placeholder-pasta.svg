@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Pates Restaurant Ali Baba">
+  <rect width="640" height="480" fill="#F7F1E8"/>
+  <circle cx="126" cy="86" r="145" fill="#B95C3C" opacity=".14"/>
+  <circle cx="500" cy="390" r="190" fill="#D6B98D" opacity=".38"/>
+  <ellipse cx="320" cy="306" rx="214" ry="72" fill="#2B1B15"/>
+  <ellipse cx="320" cy="286" rx="184" ry="56" fill="#F7F1E8"/>
+  <path d="M190 278c55-62 96 57 150-5 54-61 94 55 145-6" fill="none" stroke="#B8793D" stroke-width="18" stroke-linecap="round"/>
+  <path d="M230 315c48-45 83 32 130-10 50-45 88 30 130-10" fill="none" stroke="#D6B98D" stroke-width="16" stroke-linecap="round"/>
+</svg>
