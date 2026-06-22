@@ -1,6 +1,7 @@
 import QRCode from "qrcode";
 import { Gift, MessageCircle, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
+import LoyaltyCardMemory from "@/components/site/LoyaltyCardMemory";
 import InstallPromptButton from "@/components/site/InstallPromptButton";
 import SiteChrome from "@/components/site/SiteChrome";
 import { formatDateTime } from "@/lib/format";
@@ -58,6 +59,7 @@ export default async function LoyaltyCardPage({
 
   return (
     <SiteChrome settings={settings}>
+      <LoyaltyCardMemory publicToken={card.publicToken} />
       <main className="bg-[#F7F1E8] py-8 sm:py-12">
         <section className="section-shell grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="rounded-lg bg-[#2B1B15] p-5 text-cream shadow-soft sm:p-7">

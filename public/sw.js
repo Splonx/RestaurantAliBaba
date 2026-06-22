@@ -1,4 +1,4 @@
-const CACHE_NAME = "ali-baba-loyalty-v1";
+const CACHE_NAME = "ali-baba-loyalty-v2";
 const STATIC_PATHS = ["/fidelite", "/manifest.webmanifest", "/icons/icon-192.svg", "/icons/icon-512.svg"];
 
 self.addEventListener("install", (event) => {

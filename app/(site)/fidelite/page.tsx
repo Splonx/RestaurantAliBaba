@@ -1,4 +1,5 @@
 import { Gift, Medal, QrCode, Smartphone } from "lucide-react";
+import LoyaltyHomeRedirect from "@/components/site/LoyaltyHomeRedirect";
 import LoyaltySignupForm from "@/components/site/LoyaltySignupForm";
 import SiteChrome from "@/components/site/SiteChrome";
 import { getSiteSettings } from "@/lib/settings";
@@ -49,6 +50,7 @@ export default async function LoyaltyPage() {
           </div>
 
           <div>
+            <LoyaltyHomeRedirect />
             <LoyaltySignupForm />
             <p className="mt-4 text-center text-xs leading-5 text-coffee/55">
               Si votre téléphone existe déjà, nous retrouvons votre carte au lieu de créer un doublon.

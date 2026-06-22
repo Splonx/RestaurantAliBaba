@@ -1,4 +1,5 @@
-import { BadgePercent, ScanLine } from "lucide-react";
+import { BadgePercent, ScanLine, XCircle } from "lucide-react";
+import Link from "next/link";
 import LoyaltyActionPanel from "@/components/admin/LoyaltyActionPanel";
 import LoyaltyScanner from "@/components/admin/LoyaltyScanner";
 import PageHeader from "@/components/admin/PageHeader";
@@ -92,6 +93,14 @@ export default async function LoyaltyScanPage({
                 status: reward.status
               }))}
             />
+
+            <Link
+              href="/admin/fidelite/scan"
+              className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg border border-coffee/15 bg-white px-4 py-3 text-sm font-bold text-coffee"
+            >
+              <XCircle size={17} aria-hidden />
+              Refuser / annuler
+            </Link>
 
             <article className="rounded-lg bg-cream p-5 shadow-admin">
               <h3 className="font-display text-3xl font-semibold text-coffee">Dernières actions</h3>
